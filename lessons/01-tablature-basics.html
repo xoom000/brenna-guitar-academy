@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎸 Tablature Explained - Your First Tab Lesson 📖</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial Black', Arial, sans-serif;
+            background: 
+                linear-gradient(rgba(0, 0, 0, 0.9), rgba(20, 20, 20, 0.95)),
+                url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1200&h=800&fit=crop') center/cover;
+            background-attachment: fixed;
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 25px;
+            border-radius: 20px;
+            border: 3px solid rgba(255, 0, 0, 0.3);
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #ff0000, #ff6666, #ff0000);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 3s ease-in-out infinite;
+            margin-bottom: 10px;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            color: #ff6666;
+            margin-bottom: 15px;
+        }
+        
+        .lesson-section {
+            background: rgba(0, 0, 0, 0.7);
+            margin: 20px 0;
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #ff0000;
+            backdrop-filter: blur(10px);
+        }
+        
+        .lesson-section h2 {
+            color: #ff0000;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .lesson-section h3 {
+            color: #ff6666;
+            font-size: 1.4em;
+            margin: 20px 0 10px 0;
+        }
+        
+        .tab-example {
+            background: #000;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            line-height: 1.8;
+            margin: 15px 0;
+            border: 2px solid #333;
+            overflow-x: auto;
+        }
+        
+        .tab-line {
+            color: #fff;
+            margin: 2px 0;
+        }
+        
+        .tab-highlight {
+            background: rgba(255, 0, 0, 0.3);
+            padding: 2px 4px;
+            border-radius: 3px;
+            color: #ff6666;
+            font-weight: bold;
+        }
+        
+        .string-label {
+            color: #ff6666;
+            font-weight: bold;
+            display: inline-block;
+            width: 30px;
+        }
+        
+        .interactive-tab {
+            background: #111;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 2px solid #ff0000;
+        }
+        
+        .tab-button {
+            background: #ff0000;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-button:hover {
+            background: #ff3333;
+            transform: scale(1.05);
+        }
+        
+        .tab-button:active {
+            background: #cc0000;
+            transform: scale(0.95);
+        }
+        
+        .progress-box {
+            background: rgba(255, 0, 0, 0.1);
+            border: 2px solid #ff0000;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .progress-box h4 {
+            color: #ff0000;
+            margin-bottom: 10px;
+        }
+        
+        .tip-box {
+            background: rgba(255, 165, 0, 0.1);
+            border: 2px solid #ffa500;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .tip-box h4 {
+            color: #ffa500;
+            margin-bottom: 8px;
+        }
+        
+        .practice-section {
+            background: rgba(0, 100, 0, 0.1);
+            border: 2px solid #00ff00;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .practice-section h3 {
+            color: #00ff00;
+        }
+        
+        .number-highlight {
+            background: rgba(255, 0, 0, 0.4);
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        
+        .timing-demo {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        
+        .beat {
+            background: #333;
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            border: 2px solid #666;
+            transition: all 0.3s ease;
+        }
+        
+        .beat.active {
+            background: #ff0000;
+            border-color: #ff0000;
+            transform: scale(1.1);
+        }
+        
+        .navigation {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .nav-button {
+            background: linear-gradient(45deg, #ff0000, #cc0000);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            margin: 0 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .lesson-section {
+                padding: 15px;
+            }
+            
+            .tab-example {
+                font-size: 14px;
+                padding: 15px;
+            }
+            
+            .timing-demo {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎸 Tablature Explained 🤘</h1>
+            <div class="subtitle">Your First Step into Reading Guitar Tabs</div>
+            <p>Learn to read the language of metal guitar - one fret at a time!</p>
+        </div>
+
+        <!-- What is Tablature? -->
+        <div class="lesson-section">
+            <h2>🔥 What is Tablature?</h2>
+            <p>Tablature (or "tab") is like a roadmap for your guitar. Instead of complicated music notes, tab shows you exactly where to put your fingers on the fretboard. It's the fastest way to learn songs!</p>
+            
+            <div class="tip-box">
+                <h4>💡 Why Tabs Rock for Metal Guitar:</h4>
+                <p>Most metal songs use tabs because they show you the exact frets, string bending, and techniques that make each riff sound brutal. Traditional sheet music can't capture that metal feel!</p>
+            </div>
+        </div>
+
+        <!-- Basic Tab Structure -->
+        <div class="lesson-section">
+            <h2>📐 How to Read Tab - The Basics</h2>
+            
+            <h3>The 6 Lines = Your 6 Strings</h3>
+            <div class="tab-example">
+                <div class="tab-line"><span class="string-label">E</span>|-----|  (1st string - thinnest, highest pitch)</div>
+                <div class="tab-line"><span class="string-label">B</span>|-----|  (2nd string)</div>
+                <div class="tab-line"><span class="string-label">G</span>|-----|  (3rd string)</div>
+                <div class="tab-line"><span class="string-label">D</span>|-----|  (4th string)</div>
+                <div class="tab-line"><span class="string-label">A</span>|-----|  (5th string)</div>
+                <div class="tab-line"><span class="string-label">E</span>|-----|  (6th string - thickest, lowest pitch)</div>
+            </div>
+            
+            <h3>Numbers = Fret Numbers</h3>
+            <p>The numbers on the lines tell you which fret to press:</p>
+            <div class="tab-example">
+                <div class="tab-line"><span class="string-label">E</span>|--<span class="tab-highlight">0</span>--<span class="tab-highlight">3</span>--<span class="tab-highlight">5</span>--|</div>
+                <div class="tab-line"><span class="string-label">B</span>|------------|</div>
+                <div class="tab-line"><span class="string-label">G</span>|------------|</div>
+                <div class="tab-line"><span class="string-label">D</span>|------------|</div>
+                <div class="tab-line"><span class="string-label">A</span>|------------|</div>
+                <div class="tab-line"><span class="string-label">E</span>|------------|</div>
+            </div>
+            <p>This means: Play the high E string open (<span class="number-highlight">0</span>), then 3rd fret, then 5th fret</p>
+            
+            <div class="tip-box">
+                <h4>🎯 Remember:</h4>
+                <ul>
+                    <li><strong>0</strong> = Open string (don't press any fret)</li>
+                    <li><strong>1</strong> = 1st fret (closest to the nut)</li>
+                    <li><strong>2</strong> = 2nd fret, and so on...</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Interactive Example -->
+        <div class="lesson-section">
+            <h2>🎮 Try It Yourself - Interactive Tab</h2>
+            <p>Click the buttons below to see how different frets look in tablature:</p>
+            
+            <div class="interactive-tab">
+                <div>
+                    <button class="tab-button" onclick="showExample('open')">Open String (0)</button>
+                    <button class="tab-button" onclick="showExample('first')">1st Fret</button>
+                    <button class="tab-button" onclick="showExample('third')">3rd Fret</button>
+                    <button class="tab-button" onclick="showExample('fifth')">5th Fret</button>
+                </div>
+                
+                <div class="tab-example" id="interactive-display">
+                    <div class="tab-line"><span class="string-label">E</span>|--<span id="demo-note">?</span>--|</div>
+                    <div class="tab-line"><span class="string-label">B</span>|-----|</div>
+                    <div class="tab-line"><span class="string-label">G</span>|-----|</div>
+                    <div class="tab-line"><span class="string-label">D</span>|-----|</div>
+                    <div class="tab-line"><span class="string-label">A</span>|-----|</div>
+                    <div class="tab-line"><span class="string-label">E</span>|-----|</div>
+                </div>
+                <div id="explanation">Click a button to see the tablature!</div>
+            </div>
+        </div>
+
+        <!-- Reading Left to Right -->
+        <div class="lesson-section">
+            <h2>➡️ Reading Direction - Time Flows Left to Right</h2>
+            <p>Just like reading words, you read tablature from left to right. Each position represents when to play that note.</p>
+            
+            <div class="tab-example">
+                <div class="tab-line"><span class="string-label">E</span>|--0--3--5--3--0--|</div>
+                <div class="tab-line"><span class="string-label">B</span>|-----------------|</div>
+                <div class="tab-line"><span class="string-label">G</span>|-----------------|</div>
+                <div class="tab-line"><span class="string-label">D</span>|-----------------|</div>
+                <div class="tab-line"><span class="string-label">A</span>|-----------------|</div>
+                <div class="tab-line"><span class="string-label">E</span>|-----------------|</div>
+            </div>
+            
+            <div class="timing-demo" id="timing-demo">
+                <div class="beat" data-step="0">Beat 1: 0</div>
+                <div class="beat" data-step="1">Beat 2: 3</div>
+                <div class="beat" data-step="2">Beat 3: 5</div>
+                <div class="beat" data-step="3">Beat 4: 3</div>
+                <div class="beat" data-step="4">Beat 5: 0</div>
+            </div>
+            
+            <button class="tab-button" onclick="playTiming()">▶️ Show Timing</button>
+        </div>
+
+        <!-- Multiple Strings -->
+        <div class="lesson-section">
+            <h2>🎸 Playing Multiple Strings</h2>
+            <p>When numbers are stacked vertically, you play them at the same time (like a chord):</p>
+            
+            <div class="tab-example">
+                <div class="tab-line"><span class="string-label">E</span>|--<span class="tab-highlight">0</span>-----------|</div>
+                <div class="tab-line"><span class="string-label">B</span>|--<span class="tab-highlight">0</span>-----------|</div>
+                <div class="tab-line"><span class="string-label">G</span>|--<span class="tab-highlight">0</span>-----------|</div>
+                <div class="tab-line"><span class="string-label">D</span>|--<span class="tab-highlight">2</span>-----------|</div>
+                <div class="tab-line"><span class="string-label">A</span>|--<span class="tab-highlight">2</span>-----------|</div>
+                <div class="tab-line"><span class="string-label">E</span>|--<span class="tab-highlight">0</span>-----------|</div>
+            </div>
+            <p>This is an Em chord - play all these frets at the same time!</p>
+        </div>
+
+        <!-- Simple Metal Example -->
+        <div class="lesson-section">
+            <h2>🤘 Your First Metal Riff</h2>
+            <p>Let's learn a simple power chord progression - the foundation of metal!</p>
+            
+            <div class="tab-example">
+                <div class="tab-line"><span class="string-label">E</span>|-----------------|</div>
+                <div class="tab-line"><span class="string-label">B</span>|-----------------|</div>
+                <div class="tab-line"><span class="string-label">G</span>|-----------------|</div>
+                <div class="tab-line"><span class="string-label">D</span>|--3--3--5--5-----|</div>
+                <div class="tab-line"><span class="string-label">A</span>|--3--3--5--5-----|</div>
+                <div class="tab-line"><span class="string-label">E</span>|--1--1--3--3-----|</div>
+            </div>
+            <p>This creates the classic metal sound! Press the 6th, 5th, and 4th strings at the same time.</p>
+            
+            <div class="tip-box">
+                <h4>🔥 Pro Tip:</h4>
+                <p>Use your index finger to press all three strings at once. This is called a "power chord" and it's the backbone of metal guitar!</p>
+            </div>
+        </div>
+
+        <!-- Practice Section -->
+        <div class="practice-section">
+            <h3>🎯 Practice Time!</h3>
+            <p>Ready to practice? Try these exercises:</p>
+            
+            <div class="progress-box">
+                <h4>Exercise 1: Single Notes</h4>
+                <div class="tab-example">
+                    <div class="tab-line"><span class="string-label">E</span>|--0--1--2--3-----|</div>
+                    <div class="tab-line"><span class="string-label">B</span>|-----------------|</div>
+                    <div class="tab-line"><span class="string-label">G</span>|-----------------|</div>
+                    <div class="tab-line"><span class="string-label">D</span>|-----------------|</div>
+                    <div class="tab-line"><span class="string-label">A</span>|-----------------|</div>
+                    <div class="tab-line"><span class="string-label">E</span>|-----------------|</div>
+                </div>
+                <p>Play each fret slowly, one at a time on the high E string.</p>
+            </div>
+            
+            <div class="progress-box">
+                <h4>Exercise 2: String Changes</h4>
+                <div class="tab-example">
+                    <div class="tab-line"><span class="string-label">E</span>|--3-----------|</div>
+                    <div class="tab-line"><span class="string-label">B</span>|-----3--------|</div>
+                    <div class="tab-line"><span class="string-label">G</span>|--------3-----|</div>
+                    <div class="tab-line"><span class="string-label">D</span>|-----------3--|</div>
+                    <div class="tab-line"><span class="string-label">A</span>|--------------|</div>
+                    <div class="tab-line"><span class="string-label">E</span>|--------------|</div>
+                </div>
+                <p>Practice moving between strings while keeping the same fret.</p>
+            </div>
+        </div>
+
+        <!-- Next Steps -->
+        <div class="lesson-section">
+            <h2>🚀 What's Next?</h2>
+            <p>Now that you understand the basics, you're ready for:</p>
+            <ul style="margin: 15px 0; padding-left: 20px;">
+                <li>Real song examples (like Brain Stew!)</li>
+                <li>Advanced techniques (bends, slides, hammer-ons)</li>
+                <li>Timing and rhythm in tabs</li>
+                <li>Building your first metal riffs</li>
+            </ul>
+            
+            <div class="tip-box">
+                <h4>💪 Remember:</h4>
+                <p>Every metal guitarist started exactly where you are now. Tab reading gets easier with practice - start slow and build up speed!</p>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <a href="fretboard-to-tab-teacher.html" class="nav-button">🎸 Interactive Fretboard</a>
+            <a href="../prototypes/brain-stew-v2-real-audio.html" class="nav-button">🤘 Try Brain Stew</a>
+            <a href="fundamentals-tutorial.html" class="nav-button">📚 Guitar Fundamentals</a>
+        </div>
+    </div>
+
+    <script>
+        function showExample(type) {
+            const noteDisplay = document.getElementById('demo-note');
+            const explanation = document.getElementById('explanation');
+            
+            switch(type) {
+                case 'open':
+                    noteDisplay.textContent = '0';
+                    noteDisplay.className = 'tab-highlight';
+                    explanation.textContent = '0 means play the string open (don\'t press any fret)';
+                    break;
+                case 'first':
+                    noteDisplay.textContent = '1';
+                    noteDisplay.className = 'tab-highlight';
+                    explanation.textContent = '1 means press the 1st fret (closest to the headstock)';
+                    break;
+                case 'third':
+                    noteDisplay.textContent = '3';
+                    noteDisplay.className = 'tab-highlight';
+                    explanation.textContent = '3 means press the 3rd fret';
+                    break;
+                case 'fifth':
+                    noteDisplay.textContent = '5';
+                    noteDisplay.className = 'tab-highlight';
+                    explanation.textContent = '5 means press the 5th fret';
+                    break;
+            }
+        }
+        
+        function playTiming() {
+            const beats = document.querySelectorAll('.beat');
+            let currentStep = 0;
+            
+            // Reset all beats
+            beats.forEach(beat => beat.classList.remove('active'));
+            
+            function highlightNext() {
+                if (currentStep > 0) {
+                    beats[currentStep - 1].classList.remove('active');
+                }
+                
+                if (currentStep < beats.length) {
+                    beats[currentStep].classList.add('active');
+                    currentStep++;
+                    setTimeout(highlightNext, 800);
+                } else {
+                    // Reset after completion
+                    setTimeout(() => {
+                        beats.forEach(beat => beat.classList.remove('active'));
+                    }, 800);
+                }
+            }
+            
+            highlightNext();
+        }
+        
+        // Auto-show first example on load
+        window.addEventListener('load', function() {
+            showExample('open');
+        });
+    </script>
+</body>
+</html>

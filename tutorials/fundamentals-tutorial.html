@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎸 Guitar Fundamentals - Brenna's Journey 📚</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial Black', Arial, sans-serif;
+            background: 
+                linear-gradient(rgba(0, 0, 0, 0.8), rgba(45, 15, 15, 0.9)),
+                url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1200&h=800&fit=crop') center/cover;
+            background-attachment: fixed;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Header */
+        .header {
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(15px);
+            padding: 20px;
+            border-bottom: 3px solid #ff0000;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header h1 {
+            text-align: center;
+            background: linear-gradient(45deg, #ff0000, #ff6666, #ff0000);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite;
+            font-size: 2.5em;
+            font-weight: 900;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .breadcrumb {
+            text-align: center;
+            margin-top: 10px;
+            opacity: 0.8;
+            font-size: 1.1em;
+        }
+        
+        /* Main content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        /* Tutorial sections */
+        .tutorial-section {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            margin-bottom: 40px;
+            border: 2px solid rgba(255, 0, 0, 0.3);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .tutorial-section:hover {
+            border-color: #ff0000;
+            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.3);
+        }
+        
+        .section-header {
+            background: linear-gradient(45deg, #ff0000, #cc0000);
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .section-number {
+            font-size: 3em;
+            font-weight: 900;
+            opacity: 0.3;
+            position: absolute;
+            right: 20px;
+            top: 10px;
+        }
+        
+        .section-title {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .section-subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .section-content {
+            padding: 30px;
+        }
+        
+        /* Content blocks */
+        .content-block {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+            align-items: center;
+        }
+        
+        .content-text {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        
+        .content-text h3 {
+            color: #ff0000;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .content-text ul {
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+        
+        .content-text li {
+            margin-bottom: 8px;
+            opacity: 0.9;
+        }
+        
+        .visual-demo {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid rgba(255, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .visual-demo:hover {
+            border-color: #ff0000;
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .demo-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #333, #555);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .demo-image::after {
+            content: '🎸';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 4em;
+            opacity: 0.3;
+        }
+        
+        .demo-caption {
+            text-align: center;
+            font-weight: bold;
+            color: #ff0000;
+        }
+        
+        /* Interactive alphaTab demo */
+        .alphatab-demo {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid rgba(255, 0, 0, 0.3);
+        }
+        
+        .alphatab-controls {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .control-btn {
+            background: linear-gradient(45deg, #ff0000, #ff4444);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
+        }
+        
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 0, 0, 0.4);
+        }
+        
+        .alphatab-container {
+            height: 250px;
+            overflow: auto;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+        
+        /* Progress indicator */
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.1);
+            height: 8px;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #ff0000, #ff6666);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.3s ease;
+            animation: progressGlow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes progressGlow {
+            from { box-shadow: 0 0 5px rgba(255, 0, 0, 0.3); }
+            to { box-shadow: 0 0 15px rgba(255, 0, 0, 0.6); }
+        }
+        
+        /* Key points highlight */
+        .key-point {
+            background: linear-gradient(45deg, rgba(255, 0, 0, 0.1), rgba(255, 0, 0, 0.2));
+            border-left: 4px solid #ff0000;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+            font-weight: bold;
+        }
+        
+        .key-point::before {
+            content: '💡 ';
+            font-size: 1.2em;
+        }
+        
+        /* Navigation */
+        .tutorial-nav {
+            text-align: center;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.9);
+            border-radius: 20px;
+            margin-top: 40px;
+        }
+        
+        .nav-btn {
+            background: linear-gradient(45deg, #ff0000, #cc0000);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            margin: 0 15px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(255, 0, 0, 0.3);
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 0, 0, 0.4);
+        }
+        
+        .nav-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .content-block {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .section-title {
+                font-size: 1.5em;
+            }
+            
+            .container {
+                padding: 20px 10px;
+            }
+        }
+        
+        /* alphaTab cursor styles */
+        .at-cursor-bar { background: transparent !important; }
+        .at-cursor-beat { background: transparent !important; }
+        .at-highlight * {
+            fill: #ff0000 !important;
+            stroke: #ff0000 !important;
+            color: #ff0000 !important;
+        }
+    </style>
+    
+    <!-- alphaTab CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@coderline/alphatab@latest/dist/alphaTab.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>🎸 Guitar Fundamentals 📚</h1>
+        <div class="breadcrumb">Start Here → Master the Basics → Rock Out!</div>
+    </div>
+    
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        
+        <!-- Tutorial 1: How to Hold a Guitar -->
+        <div class="tutorial-section" id="section1">
+            <div class="section-header">
+                <div class="section-number">01</div>
+                <div class="section-title">How to Hold a Guitar</div>
+                <div class="section-subtitle">Get comfortable with your instrument</div>
+            </div>
+            <div class="section-content">
+                <div class="content-block">
+                    <div class="content-text">
+                        <h3>Proper Guitar Posture</h3>
+                        <p>Before you can rock out, you need to get comfortable holding your guitar. Good posture prevents fatigue and injury while making it easier to play.</p>
+                        <ul>
+                            <li><strong>Sitting:</strong> Rest the guitar on your right leg (if right-handed)</li>
+                            <li><strong>Back straight:</strong> Don't slouch - your back should be upright</li>
+                            <li><strong>Guitar angle:</strong> Neck should point slightly upward</li>
+                            <li><strong>Fretting hand:</strong> Thumb behind the neck, fingers curved</li>
+                            <li><strong>Picking hand:</strong> Relaxed, wrist straight</li>
+                        </ul>
+                    </div>
+                    <div class="visual-demo">
+                        <div class="demo-image" style="background-image: url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=200&fit=crop');"></div>
+                        <div class="demo-caption">Proper sitting position</div>
+                    </div>
+                </div>
+                
+                <div class="key-point">
+                    Remember: Comfort is key! If it hurts, you're probably doing something wrong. Take breaks and adjust your position.
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tutorial 2: Understanding Tablature -->
+        <div class="tutorial-section" id="section2">
+            <div class="section-header">
+                <div class="section-number">02</div>
+                <div class="section-title">Reading Tablature (Tabs)</div>
+                <div class="section-subtitle">Your roadmap to playing songs</div>
+            </div>
+            <div class="section-content">
+                <div class="content-block">
+                    <div class="content-text">
+                        <h3>What is Tablature?</h3>
+                        <p>Tablature (or "tabs") is a simple way to read guitar music. It shows you exactly where to put your fingers on the guitar neck.</p>
+                        <ul>
+                            <li><strong>6 lines:</strong> Each line represents a guitar string</li>
+                            <li><strong>Numbers:</strong> Tell you which fret to press</li>
+                            <li><strong>0:</strong> Means play the open string (don't press any fret)</li>
+                            <li><strong>Time:</strong> Read from left to right</li>
+                        </ul>
+                        
+                        <h3>String Order (from top to bottom)</h3>
+                        <ul>
+                            <li>E (1st string - thinnest, highest pitch)</li>
+                            <li>B (2nd string)</li>
+                            <li>G (3rd string)</li>
+                            <li>D (4th string)</li>
+                            <li>A (5th string)</li>
+                            <li>E (6th string - thickest, lowest pitch)</li>
+                        </ul>
+                    </div>
+                    <div class="visual-demo">
+                        <div class="demo-image">
+                            <div style="padding: 20px; color: #fff; font-family: monospace; font-size: 1.2em; text-align: center;">
+                                <div>E|--3--0--2--0--|</div>
+                                <div>B|--0--1--3--1--|</div>
+                                <div>G|--0--0--2--0--|</div>
+                                <div>D|--0--2--0--2--|</div>
+                                <div>A|--2--3--0--3--|</div>
+                                <div>E|--3--0--2--0--|</div>
+                            </div>
+                        </div>
+                        <div class="demo-caption">Example tablature</div>
+                    </div>
+                </div>
+                
+                <!-- Interactive Tab Example -->
+                <div class="alphatab-demo">
+                    <h3 style="color: #333; text-align: center; margin-bottom: 15px;">🎵 Interactive Tab Example</h3>
+                    <div class="alphatab-controls">
+                        <button class="control-btn" onclick="playExample()">▶ Play Example</button>
+                        <button class="control-btn" onclick="stopExample()">⏹ Stop</button>
+                        <p style="color: #666; margin-top: 10px;">Watch the notes light up as they play!</p>
+                    </div>
+                    <div class="alphatab-container" id="tabExample">
+                        <div style="text-align: center; color: #666; padding: 50px;">
+                            Loading simple tablature example...
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="key-point">
+                    Start slow! Focus on reading one note at a time. Speed comes with practice.
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tutorial 3: Guitar Tuning -->
+        <div class="tutorial-section" id="section3">
+            <div class="section-header">
+                <div class="section-number">03</div>
+                <div class="section-title">Guitar Tuning</div>
+                <div class="section-subtitle">Getting your guitar ready to play</div>
+            </div>
+            <div class="section-content">
+                <div class="content-block">
+                    <div class="content-text">
+                        <h3>Standard Tuning</h3>
+                        <p>Your guitar needs to be in tune to sound good. Standard tuning means each string is tuned to a specific note.</p>
+                        <ul>
+                            <li><strong>6th string (thickest):</strong> E (low E)</li>
+                            <li><strong>5th string:</strong> A</li>
+                            <li><strong>4th string:</strong> D</li>
+                            <li><strong>3rd string:</strong> G</li>
+                            <li><strong>2nd string:</strong> B</li>
+                            <li><strong>1st string (thinnest):</strong> E (high E)</li>
+                        </ul>
+                        
+                        <h3>Memory Trick</h3>
+                        <p><strong>"Eddie Ate Dynamite, Good Bye Eddie"</strong></p>
+                        <p>This phrase helps you remember the string notes from lowest to highest!</p>
+                    </div>
+                    <div class="visual-demo">
+                        <div class="demo-image" style="background-image: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=200&fit=crop');"></div>
+                        <div class="demo-caption">Guitar tuning pegs</div>
+                    </div>
+                </div>
+                
+                <div class="key-point">
+                    Use a tuning app on your phone! Popular ones include "Guitar Tuna" or "Fender Tune" - they're free and easy to use.
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navigation -->
+        <div class="tutorial-nav">
+            <h3 style="margin-bottom: 20px; color: #ff0000;">Ready for the Next Step?</h3>
+            <button class="nav-btn disabled">← Previous</button>
+            <button class="nav-btn" onclick="nextLesson()">Next: Power Chords →</button>
+        </div>
+    </div>
+
+    <script>
+        // alphaTab API instance
+        let tabApi;
+        
+        // Initialize simple tab example
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('Initializing tutorial...');
+            updateProgress(33); // 33% complete after viewing fundamentals
+            
+            // Initialize alphaTab with simple example
+            initializeTabExample();
+        });
+        
+        function initializeTabExample() {
+            const settings = {
+                core: { engine: 'svg' },
+                display: { 
+                    layoutMode: 'page',
+                    staveProfile: 'TabMixed'
+                },
+                player: {
+                    enablePlayer: true,
+                    enableCursor: true,
+                    enableElementHighlighting: true,
+                    soundFont: 'https://cdn.jsdelivr.net/npm/@coderline/alphatab@latest/dist/soundfont/sonivox.sf2'
+                }
+            };
+            
+            tabApi = new alphaTab.AlphaTabApi(document.getElementById('tabExample'), settings);
+            
+            // Create simple example or load a basic GP file
+            // For now, try to load our Brain Stew file as an example
+            fetch('../assets/brain-stew.gp3')
+                .then(response => response.arrayBuffer())
+                .then(data => {
+                    tabApi.load(data);
+                })
+                .catch(error => {
+                    console.log('Could not load example file, using placeholder');
+                    document.getElementById('tabExample').innerHTML = `
+                        <div style="text-align: center; color: #666; padding: 50px;">
+                            <p>Interactive tab example will go here</p>
+                            <p>Play button will demonstrate note highlighting</p>
+                        </div>
+                    `;
+                });
+            
+            // Event listeners
+            if (tabApi) {
+                tabApi.scoreLoaded.on(() => {
+                    console.log('Tab example loaded');
+                });
+                
+                tabApi.error.on((error) => {
+                    console.log('Tab example error:', error);
+                });
+            }
+        }
+        
+        function playExample() {
+            if (tabApi && tabApi.play) {
+                tabApi.play();
+            } else {
+                alert('Interactive example is loading...');
+            }
+        }
+        
+        function stopExample() {
+            if (tabApi && tabApi.stop) {
+                tabApi.stop();
+            }
+        }
+        
+        function updateProgress(percentage) {
+            const progressFill = document.getElementById('progressFill');
+            progressFill.style.width = percentage + '%';
+        }
+        
+        function nextLesson() {
+            alert('Next lesson: Power Chords! (Coming soon...)');
+            updateProgress(66);
+        }
+        
+        // Scroll progress tracking
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('.tutorial-section');
+            const scrollTop = window.pageYOffset;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            
+            // Update progress based on scroll
+            if (scrollPercent > 80) {
+                updateProgress(100);
+            } else if (scrollPercent > 50) {
+                updateProgress(75);
+            } else if (scrollPercent > 20) {
+                updateProgress(50);
+            }
+        });
+        
+        console.log('Guitar Fundamentals Tutorial Ready! 🎸');
+    </script>
+</body>
+</html>

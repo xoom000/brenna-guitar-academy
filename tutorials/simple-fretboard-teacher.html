@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎸 Simple Fretboard Teacher - Clear & Easy 📖</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            color: #fff;
+            min-height: 100vh;
+            padding: 15px;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid #ff0000;
+        }
+        
+        .header h1 {
+            font-size: 1.8em;
+            color: #ff0000;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #ccc;
+            font-size: 0.9em;
+        }
+        
+        /* Simple, clean controls */
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 15px;
+            border-radius: 10px;
+        }
+        
+        .control-btn {
+            background: #ff0000;
+            border: none;
+            color: white;
+            padding: 10px 16px;
+            margin: 5px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+        
+        .control-btn:hover {
+            background: #cc0000;
+            transform: scale(1.05);
+        }
+        
+        /* SIMPLIFIED fretboard - mobile first */
+        .fretboard-container {
+            background: #fff;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        
+        .fretboard {
+            position: relative;
+            width: 280px; /* Fits mobile screens */
+            height: 200px;
+            margin: 0 auto;
+            background: #f5f5dc; /* Simple light background */
+            border-radius: 5px;
+            border: 2px solid #8B4513;
+        }
+        
+        /* Clear, simple frets */
+        .fret {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #666;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        
+        .fret:nth-child(1) { top: 40px; }  /* 1st fret */
+        .fret:nth-child(2) { top: 75px; }  /* 2nd fret */
+        .fret:nth-child(3) { top: 105px; } /* 3rd fret */
+        .fret:nth-child(4) { top: 130px; } /* 4th fret */
+        .fret:nth-child(5) { top: 150px; } /* 5th fret */
+        
+        /* Clear, distinct strings */
+        .string {
+            position: absolute;
+            top: 10px;
+            bottom: 10px;
+            background: #333;
+            border-radius: 1px;
+        }
+        
+        .string:nth-child(6)  { left: 40px; width: 1px; }   /* High E */
+        .string:nth-child(7)  { left: 80px; width: 1px; }   /* B */
+        .string:nth-child(8)  { left: 120px; width: 2px; }  /* G */
+        .string:nth-child(9)  { left: 160px; width: 2px; }  /* D */
+        .string:nth-child(10) { left: 200px; width: 3px; }  /* A */
+        .string:nth-child(11) { left: 240px; width: 3px; }  /* Low E */
+        
+        /* Simple string labels */
+        .string-labels {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+            padding: 0 40px;
+            font-size: 0.8em;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        /* Simple fret markers */
+        .inlay {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #ddd;
+            border-radius: 50%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .inlay:nth-child(12) { top: 90px; }  /* 3rd fret marker */
+        .inlay:nth-child(13) { top: 140px; } /* 5th fret marker */
+        
+        /* Clear note markers */
+        .note-marker {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background: #ff0000;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            z-index: 10;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .note-marker.active {
+            display: block;
+        }
+        
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.2); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+        
+        /* Clean tablature display */
+        .tablature-display {
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .tab-title {
+            color: #333;
+            font-size: 1em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .tab-notation {
+            font-size: 1em;
+            line-height: 1.6;
+            color: #333;
+            text-align: center;
+        }
+        
+        .tab-line {
+            margin: 1px 0;
+        }
+        
+        .tab-highlight {
+            background: #ffeeee;
+            color: #ff0000;
+            font-weight: bold;
+            padding: 1px 3px;
+            border-radius: 3px;
+        }
+        
+        /* Simple explanation */
+        .explanation {
+            background: rgba(255, 0, 0, 0.1);
+            border: 2px solid #ff0000;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 15px 0;
+            color: #fff;
+        }
+        
+        .explanation h4 {
+            color: #ff0000;
+            margin-bottom: 5px;
+            font-size: 1em;
+        }
+        
+        .explanation p {
+            line-height: 1.4;
+            font-size: 0.9em;
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 320px) {
+            .fretboard {
+                width: 260px;
+                height: 180px;
+            }
+            
+            .string:nth-child(6)  { left: 35px; }
+            .string:nth-child(7)  { left: 70px; }
+            .string:nth-child(8)  { left: 105px; }
+            .string:nth-child(9)  { left: 140px; }
+            .string:nth-child(10) { left: 175px; }
+            .string:nth-child(11) { left: 210px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎸 Simple Fretboard Teacher</h1>
+            <p>Clear and easy - learn how fretboard becomes tablature!</p>
+        </div>
+        
+        <div class="controls">
+            <button class="control-btn" onclick="showNote(1, 0)">High E Open</button>
+            <button class="control-btn" onclick="showNote(1, 3)">High E 3rd</button>
+            <button class="control-btn" onclick="showNote(3, 2)">G 2nd</button>
+            <button class="control-btn" onclick="showExample()">Simple Pattern</button>
+            <button class="control-btn" onclick="clearAll()">Clear</button>
+        </div>
+        
+        <!-- Clean, simple fretboard -->
+        <div class="fretboard-container">
+            <div class="fretboard">
+                <!-- Frets -->
+                <div class="fret"></div>
+                <div class="fret"></div>
+                <div class="fret"></div>
+                <div class="fret"></div>
+                <div class="fret"></div>
+                
+                <!-- Strings -->
+                <div class="string"></div> <!-- High E -->
+                <div class="string"></div> <!-- B -->
+                <div class="string"></div> <!-- G -->
+                <div class="string"></div> <!-- D -->
+                <div class="string"></div> <!-- A -->
+                <div class="string"></div> <!-- Low E -->
+                
+                <!-- Simple fret markers -->
+                <div class="inlay"></div> <!-- 3rd fret -->
+                <div class="inlay"></div> <!-- 5th fret -->
+            </div>
+            
+            <div class="string-labels">
+                <span>High E</span>
+                <span>B</span>
+                <span>G</span>
+                <span>D</span>
+                <span>A</span>
+                <span>Low E</span>
+            </div>
+        </div>
+        
+        <!-- Clean tablature display -->
+        <div class="tablature-display">
+            <div class="tab-title">📖 How it looks in tablature:</div>
+            <div class="tab-notation" id="tabDisplay">
+                <div class="tab-line">E|-----|</div>
+                <div class="tab-line">B|-----|</div>
+                <div class="tab-line">G|-----|</div>
+                <div class="tab-line">D|-----|</div>
+                <div class="tab-line">A|-----|</div>
+                <div class="tab-line">E|-----|</div>
+            </div>
+        </div>
+        
+        <div class="explanation" id="explanation">
+            <h4>💡 How to use this:</h4>
+            <p>Click the buttons above to see notes appear on the fretboard AND in the tablature below. The numbers tell you which fret to press. 0 = open string (no fret pressed).</p>
+        </div>
+    </div>
+
+    <script>
+        function clearAll() {
+            // Clear all note markers
+            document.querySelectorAll('.note-marker').forEach(marker => {
+                marker.remove();
+            });
+            
+            // Reset tablature
+            document.getElementById('tabDisplay').innerHTML = `
+                <div class="tab-line">E|-----|</div>
+                <div class="tab-line">B|-----|</div>
+                <div class="tab-line">G|-----|</div>
+                <div class="tab-line">D|-----|</div>
+                <div class="tab-line">A|-----|</div>
+                <div class="tab-line">E|-----|</div>
+            `;
+            
+            // Reset explanation
+            document.getElementById('explanation').innerHTML = `
+                <h4>💡 How to use this:</h4>
+                <p>Click the buttons above to see notes appear on the fretboard AND in the tablature below. The numbers tell you which fret to press. 0 = open string (no fret pressed).</p>
+            `;
+        }
+        
+        function showNote(string, fret) {
+            clearAll();
+            
+            // Create simple note marker
+            const marker = document.createElement('div');
+            marker.className = 'note-marker active';
+            
+            // Position on fretboard (simplified)
+            const stringPositions = [40, 80, 120, 160, 200, 240]; // X positions
+            const fretPositions = [20, 57, 90, 118, 140, 160]; // Y positions for frets 0-5
+            
+            marker.style.left = stringPositions[string - 1] + 'px';
+            marker.style.top = fretPositions[fret] + 'px';
+            
+            document.querySelector('.fretboard').appendChild(marker);
+            
+            // Update tablature
+            updateTablature([{string: string, fret: fret}]);
+            
+            // Update explanation
+            const stringNames = ['High E (1st)', 'B (2nd)', 'G (3rd)', 'D (4th)', 'A (5th)', 'Low E (6th)'];
+            const fretText = fret === 0 ? 'open' : `${fret}${getOrdinal(fret)} fret`;
+            
+            document.getElementById('explanation').innerHTML = `
+                <h4>🎯 Playing: ${stringNames[string - 1]} string, ${fretText}</h4>
+                <p>Fretboard: Red dot shows where to press. Tablature: Number "${fret}" on the ${stringNames[string - 1]} line. That's it!</p>
+            `;
+        }
+        
+        function showExample() {
+            clearAll();
+            
+            // Simple pattern: 0-2-3 on G string
+            const notes = [
+                {string: 3, fret: 0},
+                {string: 3, fret: 2}, 
+                {string: 3, fret: 3}
+            ];
+            
+            // Show all notes
+            notes.forEach(note => {
+                const marker = document.createElement('div');
+                marker.className = 'note-marker active';
+                
+                const stringPositions = [40, 80, 120, 160, 200, 240];
+                const fretPositions = [20, 57, 90, 118, 140, 160];
+                
+                marker.style.left = stringPositions[note.string - 1] + 'px';
+                marker.style.top = fretPositions[note.fret] + 'px';
+                
+                document.querySelector('.fretboard').appendChild(marker);
+            });
+            
+            updateTablature(notes);
+            
+            document.getElementById('explanation').innerHTML = `
+                <h4>🎵 Simple pattern: 0-2-3 on G string</h4>
+                <p>Three notes in a row: open G, 2nd fret, 3rd fret. In tab, read left to right like text. Try it!</p>
+            `;
+        }
+        
+        function updateTablature(notes) {
+            const strings = ['E', 'B', 'G', 'D', 'A', 'E'];
+            const tabLines = strings.map((stringName, stringIndex) => {
+                let line = `${stringName}|`;
+                
+                const notesOnString = notes.filter(note => note.string === stringIndex + 1);
+                if (notesOnString.length > 0) {
+                    notesOnString.forEach(note => {
+                        line += `<span class="tab-highlight">${note.fret}</span>`;
+                    });
+                    line += '---|';
+                } else {
+                    line += '-----|';
+                }
+                
+                return `<div class="tab-line">${line}</div>`;
+            });
+            
+            document.getElementById('tabDisplay').innerHTML = tabLines.join('');
+        }
+        
+        function getOrdinal(num) {
+            const suffixes = ['th', 'st', 'nd', 'rd'];
+            const mod = num % 100;
+            return suffixes[(mod - 20) % 10] || suffixes[mod] || suffixes[0];
+        }
+        
+        console.log('Simple Fretboard Teacher Ready! 🎸');
+    </script>
+</body>
+</html>

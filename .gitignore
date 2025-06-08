@@ -1,0 +1,27 @@
+# Development files
+*.log
+.DS_Store
+Thumbs.db
+
+# Temporary files  
+*.tmp
+*.temp
+*~
+
+# IDE files
+.vscode/
+.idea/
+
+# Node modules (if we add build tools later)
+node_modules/
+npm-debug.log*
+
+# Large development assets (keep originals local)
+*.zip
+fretboard.js-master/
+
+# Session files
+SESSION-*.md
+
+# Keep these for GitHub Pages
+# All HTML, CSS, JS, audio files should be committed

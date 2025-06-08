@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎸 Brain Stew - Real Audio Version 🤘</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d0f0f 50%, #000 100%);
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #ff0000;
+            text-shadow: 2px 2px 8px rgba(255, 0, 0, 0.5);
+            font-weight: bold;
+        }
+        
+        .version-badge {
+            background: #ff0000;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.7em;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        
+        .song-info {
+            text-align: center;
+            margin-bottom: 30px;
+            background: rgba(255, 0, 0, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #ff0000;
+        }
+        
+        .loading-section {
+            text-align: center;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+        }
+        
+        .loading-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .loading-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff0000, #ff6666);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .control-btn {
+            background: linear-gradient(135deg, #ff0000, #cc0000);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            min-width: 100px;
+        }
+        
+        .control-btn:hover {
+            background: linear-gradient(135deg, #cc0000, #990000);
+            transform: scale(1.05);
+        }
+        
+        .control-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .tempo-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 15px;
+            border-radius: 8px;
+        }
+        
+        .tempo-slider {
+            width: 120px;
+        }
+        
+        .chord-display {
+            text-align: center;
+            margin-bottom: 20px;
+            background: rgba(255, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #ff0000;
+        }
+        
+        .current-chord {
+            font-size: 2em;
+            font-weight: bold;
+            color: #ff0000;
+            margin-bottom: 10px;
+        }
+        
+        .chord-diagram {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.2;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px auto;
+            white-space: pre;
+            display: inline-block;
+        }
+        
+        .tab-container {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 2px solid #ff0000;
+        }
+        
+        .tab-line {
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            line-height: 1.8;
+            margin: 2px 0;
+            white-space: nowrap;
+            overflow-x: auto;
+        }
+        
+        .tab-note {
+            display: inline-block;
+            min-width: 15px;
+            text-align: center;
+            transition: all 0.2s;
+            border-radius: 3px;
+            padding: 2px;
+        }
+        
+        .tab-note.active {
+            background: #ff0000;
+            color: #fff;
+            font-weight: bold;
+            transform: scale(1.2);
+            box-shadow: 0 0 10px #ff0000;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff0000, #ff6666);
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+        
+        .time-display {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            color: #ff0000;
+        }
+        
+        .audio-info {
+            background: rgba(255, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            border: 1px solid #ff0000;
+        }
+        
+        .instructions {
+            background: rgba(255, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid #ff0000;
+        }
+        
+        .instructions h3 {
+            color: #ff0000;
+            margin-bottom: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            .controls { flex-direction: column; align-items: center; }
+            .tempo-control { justify-content: center; }
+            .tab-line { font-size: 14px; }
+        }
+        
+        .error-message {
+            background: rgba(255, 0, 0, 0.2);
+            border: 2px solid #ff0000;
+            color: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎸 BRAIN STEW <span class="version-badge">V2 - REAL AUDIO</span> 🤘</h1>
+        
+        <div class="song-info">
+            <h3>Green Day - Brain Stew</h3>
+            <p>Now with REAL guitar audio! 🔥</p>
+            <p><strong>Difficulty:</strong> Beginner | <strong>Chords:</strong> Em - G</p>
+        </div>
+        
+        <div class="loading-section" id="loadingSection">
+            <h4>🎵 Loading Brain Stew...</h4>
+            <div class="loading-bar">
+                <div class="loading-fill" id="loadingFill"></div>
+            </div>
+            <p id="loadingText">Preparing audio...</p>
+        </div>
+        
+        <div class="audio-info" id="audioInfo" style="display: none;">
+            <h4>🎧 Audio Ready!</h4>
+            <div class="time-display">
+                <span>Current: <span id="currentTime">0:00</span></span>
+                <span>Duration: <span id="duration">0:00</span></span>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button class="control-btn" id="playBtn" onclick="togglePlay()" disabled>🔄 LOADING...</button>
+            <button class="control-btn" onclick="resetSong()" disabled id="resetBtn">⏹️ RESET</button>
+            <div class="tempo-control">
+                <label>Tempo:</label>
+                <input type="range" id="tempoSlider" class="tempo-slider" min="50" max="150" value="100" onchange="updateTempo()" disabled>
+                <span id="tempoDisplay">100%</span>
+            </div>
+        </div>
+        
+        <div class="chord-display">
+            <div class="current-chord" id="currentChord">Em</div>
+            <div class="chord-diagram" id="chordDiagram">E |---0---
+B |---0---
+G |---0---
+D |---2---
+A |---2---
+E |---0---</div>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        
+        <div class="tab-container">
+            <h3 style="color: #ff0000; margin-bottom: 15px;">🎵 Interactive Tablature - Synced with Real Audio!</h3>
+            <div class="tab-line">E |<span class="tab-note" data-time="0.5">-</span><span class="tab-note" data-time="1.0">0</span><span class="tab-note" data-time="1.5">-</span><span class="tab-note" data-time="2.0">-</span><span class="tab-note" data-time="2.5">-</span><span class="tab-note" data-time="3.0">0</span><span class="tab-note" data-time="3.5">-</span><span class="tab-note" data-time="4.0">-</span><span class="tab-note" data-time="4.5">-</span><span class="tab-note" data-time="5.0">3</span><span class="tab-note" data-time="5.5">-</span><span class="tab-note" data-time="6.0">-</span><span class="tab-note" data-time="6.5">-</span><span class="tab-note" data-time="7.0">3</span><span class="tab-note" data-time="7.5">-</span><span class="tab-note" data-time="8.0">-</span>|</div>
+            <div class="tab-line">B |<span class="tab-note" data-time="0.5">-</span><span class="tab-note" data-time="1.0">0</span><span class="tab-note" data-time="1.5">-</span><span class="tab-note" data-time="2.0">-</span><span class="tab-note" data-time="2.5">-</span><span class="tab-note" data-time="3.0">0</span><span class="tab-note" data-time="3.5">-</span><span class="tab-note" data-time="4.0">-</span><span class="tab-note" data-time="4.5">-</span><span class="tab-note" data-time="5.0">0</span><span class="tab-note" data-time="5.5">-</span><span class="tab-note" data-time="6.0">-</span><span class="tab-note" data-time="6.5">-</span><span class="tab-note" data-time="7.0">0</span><span class="tab-note" data-time="7.5">-</span><span class="tab-note" data-time="8.0">-</span>|</div>
+            <div class="tab-line">G |<span class="tab-note" data-time="0.5">-</span><span class="tab-note" data-time="1.0">0</span><span class="tab-note" data-time="1.5">-</span><span class="tab-note" data-time="2.0">-</span><span class="tab-note" data-time="2.5">-</span><span class="tab-note" data-time="3.0">0</span><span class="tab-note" data-time="3.5">-</span><span class="tab-note" data-time="4.0">-</span><span class="tab-note" data-time="4.5">-</span><span class="tab-note" data-time="5.0">0</span><span class="tab-note" data-time="5.5">-</span><span class="tab-note" data-time="6.0">-</span><span class="tab-note" data-time="6.5">-</span><span class="tab-note" data-time="7.0">0</span><span class="tab-note" data-time="7.5">-</span><span class="tab-note" data-time="8.0">-</span>|</div>
+            <div class="tab-line">D |<span class="tab-note" data-time="0.5">-</span><span class="tab-note" data-time="1.0">2</span><span class="tab-note" data-time="1.5">-</span><span class="tab-note" data-time="2.0">-</span><span class="tab-note" data-time="2.5">-</span><span class="tab-note" data-time="3.0">2</span><span class="tab-note" data-time="3.5">-</span><span class="tab-note" data-time="4.0">-</span><span class="tab-note" data-time="4.5">-</span><span class="tab-note" data-time="5.0">0</span><span class="tab-note" data-time="5.5">-</span><span class="tab-note" data-time="6.0">-</span><span class="tab-note" data-time="6.5">-</span><span class="tab-note" data-time="7.0">0</span><span class="tab-note" data-time="7.5">-</span><span class="tab-note" data-time="8.0">-</span>|</div>
+            <div class="tab-line">A |<span class="tab-note" data-time="0.5">-</span><span class="tab-note" data-time="1.0">2</span><span class="tab-note" data-time="1.5">-</span><span class="tab-note" data-time="2.0">-</span><span class="tab-note" data-time="2.5">-</span><span class="tab-note" data-time="3.0">2</span><span class="tab-note" data-time="3.5">-</span><span class="tab-note" data-time="4.0">-</span><span class="tab-note" data-time="4.5">-</span><span class="tab-note" data-time="5.0">2</span><span class="tab-note" data-time="5.5">-</span><span class="tab-note" data-time="6.0">-</span><span class="tab-note" data-time="6.5">-</span><span class="tab-note" data-time="7.0">2</span><span class="tab-note" data-time="7.5">-</span><span class="tab-note" data-time="8.0">-</span>|</div>
+            <div class="tab-line">E |<span class="tab-note" data-time="0.5">-</span><span class="tab-note" data-time="1.0">0</span><span class="tab-note" data-time="1.5">-</span><span class="tab-note" data-time="2.0">-</span><span class="tab-note" data-time="2.5">-</span><span class="tab-note" data-time="3.0">0</span><span class="tab-note" data-time="3.5">-</span><span class="tab-note" data-time="4.0">-</span><span class="tab-note" data-time="4.5">-</span><span class="tab-note" data-time="5.0">3</span><span class="tab-note" data-time="5.5">-</span><span class="tab-note" data-time="6.0">-</span><span class="tab-note" data-time="6.5">-</span><span class="tab-note" data-time="7.0">3</span><span class="tab-note" data-time="7.5">-</span><span class="tab-note" data-time="8.0">-</span>|</div>
+        </div>
+        
+        <div class="instructions">
+            <h3>🤘 How to Rock with Real Audio:</h3>
+            <ul style="line-height: 1.6;">
+                <li><strong>Hit PLAY</strong> and listen to the actual Brain Stew track!</li>
+                <li><strong>Watch the red highlights</strong> sync with the real guitar</li>
+                <li><strong>Tempo control</strong> adjusts playback speed (affects pitch for now)</li>
+                <li><strong>Follow the chord diagrams</strong> as they change with the song</li>
+                <li><strong>Em = first 4 seconds, G = next 4 seconds</strong></li>
+                <li><strong>This is the real deal!</strong> You're learning from Green Day! 🔥</li>
+            </ul>
+        </div>
+        
+        <div id="errorMessage" class="error-message" style="display: none;">
+            <h4>⚠️ Audio Error</h4>
+            <p id="errorText">Something went wrong loading the audio.</p>
+        </div>
+    </div>
+    
+    <script>
+        class RealAudioPlayer {
+            constructor() {
+                this.audioContext = null;
+                this.audioBuffer = null;
+                this.source = null;
+                this.gainNode = null;
+                this.isPlaying = false;
+                this.isPaused = false;
+                this.startTime = 0;
+                this.pausedAt = 0;
+                this.currentTime = 0;
+                this.duration = 0;
+                this.playbackRate = 1.0;
+                this.updateInterval = null;
+                
+                this.chordDiagrams = {
+                    'Em': `E |---0---
+B |---0---
+G |---0---
+D |---2---
+A |---2---
+E |---0---`,
+                    'G': `E |---3---
+B |---0---
+G |---0---
+D |---0---
+A |---2---
+E |---3---`
+                };
+                
+                this.init();
+            }
+            
+            async init() {
+                try {
+                    // Initialize audio context
+                    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    
+                    // Load the audio file (relative path for HTTP server)
+                    await this.loadAudioFile('../assets/audio/brain-stew.mp3');
+                    
+                } catch (error) {
+                    this.showError('Failed to initialize audio: ' + error.message);
+                }
+            }
+            
+            async loadAudioFile(url) {
+                try {
+                    this.updateLoadingText('Downloading audio file...');
+                    console.log('Attempting to load audio from:', url);
+                    
+                    const response = await fetch(url);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText} - URL: ${url}`);
+                    }
+                    
+                    const contentLength = +response.headers.get('Content-Length');
+                    const reader = response.body.getReader();
+                    let receivedLength = 0;
+                    let chunks = [];
+                    
+                    while (true) {
+                        const { done, value } = await reader.read();
+                        
+                        if (done) break;
+                        
+                        chunks.push(value);
+                        receivedLength += value.length;
+                        
+                        if (contentLength) {
+                            const progress = (receivedLength / contentLength) * 0.8; // 80% for download
+                            this.updateLoadingProgress(progress);
+                        }
+                    }
+                    
+                    this.updateLoadingText('Decoding audio...');
+                    
+                    // Combine chunks
+                    const chunksAll = new Uint8Array(receivedLength);
+                    let position = 0;
+                    for (let chunk of chunks) {
+                        chunksAll.set(chunk, position);
+                        position += chunk.length;
+                    }
+                    
+                    // Decode audio data
+                    this.audioBuffer = await this.audioContext.decodeAudioData(chunksAll.buffer);
+                    this.duration = this.audioBuffer.duration;
+                    
+                    this.updateLoadingProgress(1.0);
+                    this.onAudioReady();
+                    
+                } catch (error) {
+                    console.error('Audio loading error:', error);
+                    const detailedError = `Failed to load audio file: ${error.message}\n\nTechnical details:\n- URL: ${url}\n- Error type: ${error.name}\n- Browser: ${navigator.userAgent.split(' ')[0]}`;
+                    this.showError(detailedError);
+                }
+            }
+            
+            onAudioReady() {
+                // Hide loading, show controls
+                document.getElementById('loadingSection').style.display = 'none';
+                document.getElementById('audioInfo').style.display = 'block';
+                
+                // Enable controls
+                document.getElementById('playBtn').disabled = false;
+                document.getElementById('resetBtn').disabled = false;
+                document.getElementById('tempoSlider').disabled = false;
+                document.getElementById('playBtn').textContent = '▶️ PLAY';
+                
+                // Update duration display
+                document.getElementById('duration').textContent = this.formatTime(this.duration);
+                
+                // Start time update loop
+                this.startTimeUpdates();
+            }
+            
+            play() {
+                if (this.audioContext.state === 'suspended') {
+                    this.audioContext.resume();
+                }
+                
+                if (this.source) {
+                    this.source.stop();
+                }
+                
+                // Create new source
+                this.source = this.audioContext.createBufferSource();
+                this.source.buffer = this.audioBuffer;
+                
+                // Create gain node for volume control
+                this.gainNode = this.audioContext.createGain();
+                this.source.connect(this.gainNode);
+                this.gainNode.connect(this.audioContext.destination);
+                
+                // Set playback rate
+                this.source.playbackRate.value = this.playbackRate;
+                
+                // Play from current position
+                this.startTime = this.audioContext.currentTime;
+                this.source.start(0, this.pausedAt);
+                
+                this.isPlaying = true;
+                this.isPaused = false;
+                
+                // Update UI
+                document.getElementById('playBtn').textContent = '⏸️ PAUSE';
+                
+                // Handle end of track
+                this.source.onended = () => {
+                    if (this.isPlaying) { // Only if not manually stopped
+                        this.pause();
+                        this.resetSong();
+                    }
+                };
+            }
+            
+            pause() {
+                if (this.source && this.isPlaying) {
+                    this.source.stop();
+                    this.pausedAt += this.audioContext.currentTime - this.startTime;
+                    this.isPlaying = false;
+                    this.isPaused = true;
+                    
+                    // Update UI
+                    document.getElementById('playBtn').textContent = '▶️ PLAY';
+                }
+            }
+            
+            reset() {
+                this.pause();
+                this.pausedAt = 0;
+                this.currentTime = 0;
+                this.clearHighlights();
+                this.updateChordDisplay();
+                this.updateProgress();
+            }
+            
+            setPlaybackRate(rate) {
+                this.playbackRate = rate;
+                
+                if (this.source && this.isPlaying) {
+                    // Restart with new rate
+                    const wasPlaying = this.isPlaying;
+                    this.pause();
+                    if (wasPlaying) {
+                        this.play();
+                    }
+                }
+            }
+            
+            getCurrentTime() {
+                if (this.isPlaying) {
+                    const elapsed = (this.audioContext.currentTime - this.startTime) * this.playbackRate;
+                    return this.pausedAt + elapsed;
+                } else {
+                    return this.pausedAt;
+                }
+            }
+            
+            startTimeUpdates() {
+                this.updateInterval = setInterval(() => {
+                    this.currentTime = this.getCurrentTime();
+                    this.updateTimeDisplay();
+                    this.updateProgress();
+                    this.updateTablatureHighlights();
+                    this.updateChordDisplay();
+                }, 50); // Update every 50ms for smooth animation
+            }
+            
+            updateTimeDisplay() {
+                document.getElementById('currentTime').textContent = this.formatTime(this.currentTime);
+            }
+            
+            updateProgress() {
+                const progress = (this.currentTime / this.duration) * 100;
+                document.getElementById('progressFill').style.width = Math.min(100, Math.max(0, progress)) + '%';
+            }
+            
+            updateTablatureHighlights() {
+                this.clearHighlights();
+                
+                // Find notes that should be highlighted at current time
+                const tolerance = 0.1; // 100ms tolerance
+                document.querySelectorAll('.tab-note[data-time]').forEach(note => {
+                    const noteTime = parseFloat(note.getAttribute('data-time'));
+                    if (Math.abs(this.currentTime - noteTime) < tolerance) {
+                        note.classList.add('active');
+                    }
+                });
+            }
+            
+            updateChordDisplay() {
+                // Em for first 4 seconds, G for next 4 seconds
+                const chord = this.currentTime < 4 ? 'Em' : 'G';
+                document.getElementById('currentChord').textContent = chord;
+                document.getElementById('chordDiagram').textContent = this.chordDiagrams[chord];
+            }
+            
+            clearHighlights() {
+                document.querySelectorAll('.tab-note.active').forEach(note => {
+                    note.classList.remove('active');
+                });
+            }
+            
+            formatTime(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins}:${secs.toString().padStart(2, '0')}`;
+            }
+            
+            updateLoadingProgress(progress) {
+                document.getElementById('loadingFill').style.width = (progress * 100) + '%';
+            }
+            
+            updateLoadingText(text) {
+                document.getElementById('loadingText').textContent = text;
+            }
+            
+            showError(message) {
+                document.getElementById('loadingSection').style.display = 'none';
+                document.getElementById('errorMessage').style.display = 'block';
+                
+                // Handle multi-line error messages
+                const errorElement = document.getElementById('errorText');
+                errorElement.style.whiteSpace = 'pre-wrap';
+                errorElement.style.textAlign = 'left';
+                errorElement.style.fontSize = '0.9em';
+                errorElement.textContent = message;
+            }
+        }
+        
+        // Global player instance
+        let player = null;
+        
+        // Initialize when page loads
+        window.addEventListener('load', function() {
+            player = new RealAudioPlayer();
+        });
+        
+        function togglePlay() {
+            if (!player) return;
+            
+            if (player.isPlaying) {
+                player.pause();
+            } else {
+                player.play();
+            }
+        }
+        
+        function resetSong() {
+            if (!player) return;
+            player.reset();
+        }
+        
+        function updateTempo() {
+            if (!player) return;
+            
+            const tempoValue = parseInt(document.getElementById('tempoSlider').value);
+            const rate = tempoValue / 100; // Convert percentage to rate
+            
+            player.setPlaybackRate(rate);
+            document.getElementById('tempoDisplay').textContent = tempoValue + '%';
+        }
+        
+        // Initialize display
+        updateTempo();
+    </script>
+</body>
+</html>

@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎸 Brenna's Guitar Journey - UI Architecture Mockup 🤘</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        /* Mobile-first navigation */
+        .nav-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: #ff0000;
+            border: none;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        
+        .sidebar {
+            position: fixed;
+            left: -300px;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d0f0f 50%, #000 100%);
+            transition: left 0.3s ease;
+            z-index: 999;
+            overflow-y: auto;
+            padding: 20px;
+            border-right: 3px solid #ff0000;
+        }
+        
+        .sidebar.open {
+            left: 0;
+        }
+        
+        .sidebar h2 {
+            color: #ff0000;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+        }
+        
+        .difficulty-section {
+            margin-bottom: 30px;
+        }
+        
+        .difficulty-header {
+            color: #ff0000;
+            font-size: 1em;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid rgba(255, 0, 0, 0.3);
+        }
+        
+        .artist-item {
+            background: rgba(255, 0, 0, 0.1);
+            margin-bottom: 10px;
+            padding: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            border-left: 3px solid transparent;
+        }
+        
+        .artist-item:hover {
+            background: rgba(255, 0, 0, 0.2);
+            border-left: 3px solid #ff0000;
+        }
+        
+        .artist-name {
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        .artist-description {
+            font-size: 0.7em;
+            color: #ccc;
+            margin-top: 5px;
+        }
+        
+        /* Main content area */
+        .main-content {
+            margin-left: 0;
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+            padding: 80px 20px 20px 20px;
+        }
+        
+        /* Theme variations for different artists */
+        .theme-greenday {
+            background: linear-gradient(135deg, #0a5c2e 0%, #0d7a3a 50%, #0a4d26 100%);
+        }
+        
+        .theme-metallica {
+            background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 50%, #000 100%);
+        }
+        
+        .theme-ghost {
+            background: linear-gradient(135deg, #4a0080 0%, #2d004d 50%, #1a0030 100%);
+        }
+        
+        .theme-beginners {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d0f0f 50%, #000 100%);
+        }
+        
+        /* Content sections */
+        .hero-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .hero-title {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2em;
+            opacity: 0.8;
+        }
+        
+        .song-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .song-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s, border-color 0.3s;
+            cursor: pointer;
+        }
+        
+        .song-card:hover {
+            transform: translateY(-5px);
+            border-color: #ff0000;
+        }
+        
+        .song-title {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            color: #ff0000;
+        }
+        
+        .song-difficulty {
+            background: rgba(255, 0, 0, 0.2);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        
+        .song-description {
+            font-size: 0.9em;
+            line-height: 1.4;
+            opacity: 0.8;
+        }
+        
+        /* Overlay for mobile nav */
+        .nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        
+        .nav-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Responsive adjustments */
+        @media (min-width: 768px) {
+            .nav-toggle {
+                display: none;
+            }
+            
+            .sidebar {
+                left: 0;
+                position: relative;
+                width: 280px;
+                height: 100vh;
+                flex-shrink: 0;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+            
+            .app-container {
+                display: flex;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile nav toggle -->
+    <button class="nav-toggle" onclick="toggleNav()">🎸</button>
+    
+    <!-- Navigation overlay for mobile -->
+    <div class="nav-overlay" onclick="closeNav()"></div>
+    
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar" id="sidebar">
+            <h2>🎸 Choose Your Journey</h2>
+            
+            <!-- Beginners Section -->
+            <div class="difficulty-section">
+                <div class="difficulty-header">📚 Start Here</div>
+                <div class="artist-item" onclick="loadTheme('beginners')">
+                    <div class="artist-name">Guitar Basics</div>
+                    <div class="artist-description">Learn to read tabs, hold a pick, basic techniques</div>
+                </div>
+            </div>
+            
+            <!-- Beginner Artists -->
+            <div class="difficulty-section">
+                <div class="difficulty-header">🟢 Beginner Friendly</div>
+                <div class="artist-item" onclick="loadTheme('greenday')">
+                    <div class="artist-name">Green Day</div>
+                    <div class="artist-description">Power chords, simple progressions, punk attitude</div>
+                </div>
+                <div class="artist-item" onclick="loadTheme('ghost')">
+                    <div class="artist-name">Ghost</div>
+                    <div class="artist-description">Melodic metal, great for beginners</div>
+                </div>
+            </div>
+            
+            <!-- Intermediate Artists -->
+            <div class="difficulty-section">
+                <div class="difficulty-header">🟡 Intermediate</div>
+                <div class="artist-item" onclick="loadTheme('metallica')">
+                    <div class="artist-name">Metallica</div>
+                    <div class="artist-description">Palm muting, faster riffs, metal fundamentals</div>
+                </div>
+            </div>
+            
+            <!-- Advanced (for later) -->
+            <div class="difficulty-section">
+                <div class="difficulty-header">🔴 Advanced (Coming Soon)</div>
+                <div class="artist-item" style="opacity: 0.5;">
+                    <div class="artist-name">System of a Down</div>
+                    <div class="artist-description">Complex rhythms, drop tunings</div>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Main Content Area -->
+        <main class="main-content theme-beginners" id="mainContent">
+            <div class="hero-section">
+                <h1 class="hero-title">🎸 Welcome, Brenna! 🤘</h1>
+                <p class="hero-subtitle">Choose an artist from the menu to start your guitar journey with the music you love!</p>
+            </div>
+            
+            <div class="song-grid" id="songGrid">
+                <div class="song-card">
+                    <div class="song-title">Getting Started</div>
+                    <div class="song-difficulty">Essential</div>
+                    <div class="song-description">
+                        Learn how to hold a guitar, read tablature, and understand the basics before diving into your favorite songs.
+                    </div>
+                </div>
+                
+                <div class="song-card">
+                    <div class="song-title">Your First Power Chord</div>
+                    <div class="song-difficulty">Foundation</div>
+                    <div class="song-description">
+                        The building block of punk and metal! Master this and you can play hundreds of songs.
+                    </div>
+                </div>
+                
+                <div class="song-card">
+                    <div class="song-title">Reading Tablature</div>
+                    <div class="song-difficulty">Essential</div>
+                    <div class="song-description">
+                        Understand the symbols, numbers, and notation that will guide your guitar journey.
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Mobile navigation
+        function toggleNav() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.querySelector('.nav-overlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('show');
+        }
+        
+        function closeNav() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.querySelector('.nav-overlay');
+            sidebar.classList.remove('open');
+            overlay.classList.remove('show');
+        }
+        
+        // Theme switching
+        function loadTheme(artist) {
+            const mainContent = document.getElementById('mainContent');
+            const songGrid = document.getElementById('songGrid');
+            
+            // Remove all theme classes
+            mainContent.className = 'main-content';
+            
+            // Add new theme
+            mainContent.classList.add(`theme-${artist}`);
+            
+            // Update content based on artist
+            updateContent(artist);
+            
+            // Close mobile nav
+            closeNav();
+        }
+        
+        function updateContent(artist) {
+            const heroTitle = document.querySelector('.hero-title');
+            const heroSubtitle = document.querySelector('.hero-subtitle');
+            const songGrid = document.getElementById('songGrid');
+            
+            const contentMap = {
+                beginners: {
+                    title: '🎸 Guitar Fundamentals 📚',
+                    subtitle: 'Master the basics before rocking out!',
+                    songs: [
+                        {
+                            title: 'How to Hold a Guitar',
+                            difficulty: 'Start Here',
+                            description: 'Proper posture, hand positioning, and getting comfortable with your instrument.'
+                        },
+                        {
+                            title: 'Reading Tablature',
+                            difficulty: 'Essential',
+                            description: 'Understanding numbers, lines, and symbols in guitar tabs.'
+                        },
+                        {
+                            title: 'Your First Power Chord',
+                            difficulty: 'Foundation',
+                            description: 'The most important chord in rock and metal music!'
+                        }
+                    ]
+                },
+                greenday: {
+                    title: '🟢 Green Day 🎸',
+                    subtitle: 'Punk rock power chords and infectious energy!',
+                    songs: [
+                        {
+                            title: 'Brain Stew',
+                            difficulty: 'Beginner',
+                            description: 'Simple, hypnotic riff perfect for learning timing and power chords.'
+                        },
+                        {
+                            title: 'When I Come Around',
+                            difficulty: 'Beginner',
+                            description: 'Classic Green Day progression with easy chord changes.'
+                        },
+                        {
+                            title: 'Basket Case',
+                            difficulty: 'Beginner+',
+                            description: 'Faster tempo, great for building speed and confidence.'
+                        }
+                    ]
+                },
+                metallica: {
+                    title: '⚡ Metallica ⚡',
+                    subtitle: 'Master of metal riffs and palm muting!',
+                    songs: [
+                        {
+                            title: 'Enter Sandman',
+                            difficulty: 'Intermediate',
+                            description: 'Iconic riff with palm muting technique.'
+                        },
+                        {
+                            title: 'Nothing Else Matters',
+                            difficulty: 'Intermediate',
+                            description: 'Beautiful fingerpicking intro, perfect for dynamics.'
+                        },
+                        {
+                            title: 'For Whom The Bell Tolls',
+                            difficulty: 'Intermediate+',
+                            description: 'Heavy riffing with rhythm changes.'
+                        }
+                    ]
+                },
+                ghost: {
+                    title: '👻 Ghost 🔥',
+                    subtitle: 'Melodic metal with theatrical flair!',
+                    songs: [
+                        {
+                            title: 'Mary On A Cross',
+                            difficulty: 'Beginner',
+                            description: 'Simple, beautiful chord progression.'
+                        },
+                        {
+                            title: 'Square Hammer',
+                            difficulty: 'Beginner+',
+                            description: 'Catchy riff with great rhythm.'
+                        },
+                        {
+                            title: 'Cirice',
+                            difficulty: 'Intermediate',
+                            description: 'Dynamic song with multiple techniques.'
+                        }
+                    ]
+                }
+            };
+            
+            const content = contentMap[artist];
+            if (content) {
+                heroTitle.textContent = content.title;
+                heroSubtitle.textContent = content.subtitle;
+                
+                songGrid.innerHTML = content.songs.map(song => `
+                    <div class="song-card">
+                        <div class="song-title">${song.title}</div>
+                        <div class="song-difficulty">${song.difficulty}</div>
+                        <div class="song-description">${song.description}</div>
+                    </div>
+                `).join('');
+            }
+        }
+        
+        console.log('UI Architecture Mockup Ready!');
+    </script>
+</body>
+</html>

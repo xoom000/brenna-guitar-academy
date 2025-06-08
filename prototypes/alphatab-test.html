@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎸 alphaTab Test - Brain Stew 🤘</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d0f0f 50%, #000 100%);
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #ff0000;
+            text-shadow: 2px 2px 8px rgba(255, 0, 0, 0.5);
+            font-weight: bold;
+        }
+        
+        .controls {
+            text-align: center;
+            margin-bottom: 30px;
+            background: rgba(255, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .btn {
+            background: #ff0000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #cc0000;
+        }
+        
+        #alphaTab {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 400px;
+            overflow-x: auto;
+            overflow-y: auto;
+            max-width: 100%;
+        }
+        
+        #loading-div {
+            text-align: center;
+            color: #333;
+            font-size: 18px;
+            padding: 50px;
+        }
+        
+        #file-info {
+            background: rgba(255, 0, 0, 0.1);
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+        
+        /* alphaTab cursor styles - note level highlighting */
+        .at-cursor-bar {
+            background: transparent !important;
+        }
+        
+        .at-cursor-beat {
+            background: transparent !important;
+        }
+        
+        .at-selection {
+            background: rgba(255, 0, 0, 0.1) !important;
+        }
+        
+        /* Note highlighting when played */
+        .at-highlight * {
+            fill: #ff0000 !important;
+            stroke: #ff0000 !important;
+            color: #ff0000 !important;
+        }
+    </style>
+    
+    <!-- alphaTab CDN Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@coderline/alphatab@latest/dist/alphaTab.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>🎸 alphaTab Test - Brain Stew 🤘</h1>
+        
+        <div class="controls">
+            <input type="button" class="btn" id="playPause" value="▶ Play/Pause"/>
+            <input type="button" class="btn" id="stopBtn" value="⏹ Stop"/>
+            <input type="file" id="fileInput" accept=".gp,.gp3,.gp4,.gp5,.gpx" style="margin-left: 20px;"/>
+        </div>
+
+        <!-- alphaTab Container -->
+        <div id="alphaTab" data-file="../assets/brain-stew.gp3">
+            <div id="loading-div">
+                🎸 Loading Brain Stew Guitar Pro file...<br>
+                <small>Or use the file input above to load a different .gp file</small>
+            </div>
+        </div>
+
+        <!-- Track Information -->
+        <div id="file-info" style="display: none;"></div>
+    </div>
+
+    <script>
+        console.log('alphaTab Test Starting...');
+        
+        // Initialize alphaTab
+        let api;
+        
+        // Auto-load Brain Stew on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('Auto-loading Brain Stew...');
+            loadBrainStew();
+        });
+        
+        function loadBrainStew() {
+            const settings = {
+                core: {
+                    engine: 'svg'
+                },
+                display: {
+                    layoutMode: 'page',
+                    staveProfile: 'TabMixed'
+                },
+                player: {
+                    enablePlayer: true,
+                    enableCursor: true,
+                    enableUserInteraction: true,
+                    soundFont: 'https://cdn.jsdelivr.net/npm/@coderline/alphatab@latest/dist/soundfont/sonivox.sf2',
+                    scrollElement: '#alphaTab',
+                    audioBufferSize: 2048,
+                    enableElementHighlighting: true
+                }
+            };
+            
+            api = new alphaTab.AlphaTabApi(document.getElementById('alphaTab'), settings);
+            
+            // Load Brain Stew file
+            fetch('../assets/brain-stew.gp3')
+                .then(response => response.arrayBuffer())
+                .then(data => {
+                    api.load(data);
+                })
+                .catch(error => {
+                    console.error('Error loading Brain Stew:', error);
+                    document.getElementById('loading-div').innerHTML = `
+                        ❌ Error loading Brain Stew: ${error}<br>
+                        <small>Try using the file picker above</small>
+                    `;
+                });
+            
+            // Event listeners
+            api.scoreLoaded.on((score) => {
+                console.log('Score loaded:', score);
+                document.getElementById('loading-div').style.display = 'none';
+                document.getElementById('file-info').style.display = 'block';
+                document.getElementById('file-info').innerHTML = `
+                    <h3>📄 Song Info</h3>
+                    <p><strong>Title:</strong> ${score.title || 'Brain Stew'}</p>
+                    <p><strong>Artist:</strong> ${score.artist || 'Green Day'}</p>
+                    <p><strong>Tempo:</strong> ${score.tempo} BPM</p>
+                    <p><strong>Tracks:</strong> ${score.tracks.length}</p>
+                `;
+            });
+            
+            api.renderFinished.on(() => {
+                console.log('Rendering finished');
+            });
+            
+            api.soundFontLoad.on(() => {
+                console.log('SoundFont loaded - audio ready!');
+            });
+            
+            api.playerReady.on(() => {
+                console.log('Player ready!');
+            });
+            
+            // Add playback cursor functionality
+            api.playerPositionChanged.on((e) => {
+                // This fires during playback to update cursor position
+                console.log('Playback position:', e.currentTime, 'Total:', e.endTime);
+            });
+            
+            api.playerStateChanged.on((e) => {
+                console.log('Player state changed:', e.state);
+                const playBtn = document.getElementById('playPause');
+                if (e.state === 1) { // Playing
+                    playBtn.value = '⏸ Pause';
+                } else {
+                    playBtn.value = '▶ Play';
+                }
+            });
+            
+            api.error.on((error) => {
+                console.error('alphaTab Error:', error);
+                document.getElementById('loading-div').innerHTML = `
+                    ❌ Error: ${error}<br>
+                    <small>Try using the file picker above</small>
+                `;
+            });
+        }
+        
+        // File input handler
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                console.log('Loading file:', file.name);
+                document.getElementById('loading-div').innerHTML = `Loading ${file.name}...`;
+                
+                // Initialize alphaTab with the selected file
+                const settings = {
+                    core: {
+                        engine: 'svg'
+                    },
+                    display: {
+                        layoutMode: 'horizontal'
+                    }
+                };
+                
+                api = new alphaTab.AlphaTabApi(document.getElementById('alphaTab'), settings);
+                
+                // Load the file
+                api.load(file);
+                
+                // Event listeners
+                api.scoreLoaded.on((score) => {
+                    console.log('Score loaded:', score);
+                    document.getElementById('loading-div').style.display = 'none';
+                    document.getElementById('file-info').style.display = 'block';
+                    document.getElementById('file-info').innerHTML = `
+                        <h3>📄 Song Info</h3>
+                        <p><strong>Title:</strong> ${score.title || 'Unknown'}</p>
+                        <p><strong>Artist:</strong> ${score.artist || 'Unknown'}</p>
+                        <p><strong>Tempo:</strong> ${score.tempo} BPM</p>
+                        <p><strong>Tracks:</strong> ${score.tracks.length}</p>
+                    `;
+                });
+                
+                api.renderFinished.on(() => {
+                    console.log('Rendering finished');
+                });
+                
+                api.error.on((error) => {
+                    console.error('alphaTab Error:', error);
+                    document.getElementById('loading-div').innerHTML = `
+                        ❌ Error loading file: ${error}<br>
+                        <small>Make sure it's a valid Guitar Pro file (.gp, .gp3, .gp4, .gp5, .gpx)</small>
+                    `;
+                });
+            }
+        });
+        
+        // Control buttons
+        document.getElementById('playPause').addEventListener('click', function() {
+            if (api) {
+                console.log('Play button clicked, isPlaying:', api.isPlaying);
+                if (api.isPlaying) {
+                    api.pause();
+                    console.log('Paused');
+                } else {
+                    api.play();
+                    console.log('Playing');
+                }
+            } else {
+                alert('Please load a Guitar Pro file first!');
+            }
+        });
+        
+        document.getElementById('stopBtn').addEventListener('click', function() {
+            if (api) {
+                api.stop();
+            }
+        });
+        
+        console.log('alphaTab Test Ready!');
+    </script>
+</body>
+</html>

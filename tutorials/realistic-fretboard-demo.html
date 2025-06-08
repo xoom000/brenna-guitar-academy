@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎸 Realistic Fretboard Demo - Wood & Steel 🤘</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial Black', Arial, sans-serif;
+            background: 
+                linear-gradient(rgba(0, 0, 0, 0.9), rgba(20, 20, 20, 0.95)),
+                url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1200&h=800&fit=crop') center/cover;
+            background-attachment: fixed;
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 30px;
+            border-radius: 20px;
+            border: 3px solid rgba(255, 0, 0, 0.3);
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            background: linear-gradient(45deg, #ff0000, #ff6666, #ff0000);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 3s ease-in-out infinite;
+            margin-bottom: 15px;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        /* Realistic Fretboard Container */
+        .fretboard-container {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 20px;
+            padding: 30px;
+            border: 3px solid rgba(255, 0, 0, 0.3);
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        
+        .fretboard {
+            position: relative;
+            width: 300px;
+            height: 600px;
+            margin: 20px auto;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Wood grain background */
+        .fretboard-wood {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(0deg, 
+                    #8B4513 0%, 
+                    #A0522D 25%, 
+                    #D2B48C 50%, 
+                    #A0522D 75%, 
+                    #8B4513 100%
+                );
+            background-size: 100% 40px;
+            background-repeat: repeat-y;
+        }
+        
+        /* Wood grain texture overlay */
+        .fretboard-wood::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 1px,
+                    rgba(139, 69, 19, 0.1) 1px,
+                    rgba(139, 69, 19, 0.1) 2px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 8px,
+                    rgba(160, 82, 45, 0.1) 8px,
+                    rgba(160, 82, 45, 0.1) 12px
+                );
+        }
+        
+        /* Frets */
+        .fret {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, #C0C0C0, #E5E5E5, #C0C0C0);
+            box-shadow: 
+                0 1px 2px rgba(0, 0, 0, 0.3),
+                0 -1px 1px rgba(255, 255, 255, 0.2);
+        }
+        
+        .fret:nth-child(2) { top: 50px; }
+        .fret:nth-child(3) { top: 95px; }
+        .fret:nth-child(4) { top: 135px; }
+        .fret:nth-child(5) { top: 170px; }
+        .fret:nth-child(6) { top: 200px; }
+        .fret:nth-child(7) { top: 225px; }
+        .fret:nth-child(8) { top: 245px; }
+        .fret:nth-child(9) { top: 262px; }
+        .fret:nth-child(10) { top: 276px; }
+        .fret:nth-child(11) { top: 288px; }
+        .fret:nth-child(12) { top: 298px; }
+        .fret:nth-child(13) { top: 306px; }
+        
+        /* Strings */
+        .string {
+            position: absolute;
+            top: 20px;
+            bottom: 20px;
+            width: 2px;
+            background: linear-gradient(to bottom, #E6E6FA, #FFFFFF, #E6E6FA);
+            box-shadow: 1px 0 2px rgba(0, 0, 0, 0.3);
+            border-radius: 1px;
+        }
+        
+        .string:nth-child(14) { left: 50px; width: 1px; } /* High E */
+        .string:nth-child(15) { left: 100px; width: 1.5px; } /* B */
+        .string:nth-child(16) { left: 150px; width: 2px; } /* G */
+        .string:nth-child(17) { left: 200px; width: 2.5px; } /* D */
+        .string:nth-child(18) { left: 250px; width: 3px; } /* A */
+        .string:nth-child(19) { left: 300px; width: 3.5px; } /* Low E */
+        
+        /* Fret markers/inlays */
+        .inlay {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: radial-gradient(circle, #FFF8DC, #F5DEB3);
+            border-radius: 50%;
+            border: 1px solid rgba(139, 69, 19, 0.3);
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.5);
+        }
+        
+        .inlay.single {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .inlay.double {
+            width: 8px;
+            height: 8px;
+        }
+        
+        .inlay.double.left {
+            left: 35%;
+            transform: translateX(-50%);
+        }
+        
+        .inlay.double.right {
+            left: 65%;
+            transform: translateX(-50%);
+        }
+        
+        /* Fret 3 */
+        .inlay:nth-child(20) { top: 115px; }
+        /* Fret 5 */
+        .inlay:nth-child(21) { top: 185px; }
+        /* Fret 7 */
+        .inlay:nth-child(22) { top: 235px; }
+        /* Fret 9 */
+        .inlay:nth-child(23) { top: 269px; }
+        /* Fret 12 - double dots */
+        .inlay:nth-child(24) { top: 302px; }
+        .inlay:nth-child(25) { top: 302px; }
+        
+        /* Interactive note markers */
+        .note-marker {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 0, 0, 0.8);
+            border: 2px solid #fff;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+            display: none;
+        }
+        
+        .note-marker.active {
+            display: block;
+            animation: noteGlow 2s infinite;
+        }
+        
+        .note-marker:hover {
+            background: rgba(255, 0, 0, 1);
+            transform: translate(-50%, -50%) scale(1.2);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
+        }
+        
+        @keyframes noteGlow {
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 0, 0, 1); }
+        }
+        
+        /* Controls */
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .control-btn {
+            background: linear-gradient(45deg, #ff0000, #ff4444);
+            border: none;
+            color: white;
+            padding: 12px 25px;
+            margin: 0 10px 10px 10px;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
+        }
+        
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 0, 0, 0.4);
+        }
+        
+        .info-panel {
+            background: rgba(0, 0, 0, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 2px solid rgba(255, 0, 0, 0.3);
+        }
+        
+        .info-panel h3 {
+            color: #ff0000;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎸 Realistic Fretboard Demo</h1>
+            <p>A more authentic-looking guitar fretboard with wood grain, strings, and inlays</p>
+        </div>
+        
+        <div class="fretboard-container">
+            <div class="controls">
+                <button class="control-btn" onclick="showGChord()">🎵 G Major Chord</button>
+                <button class="control-btn" onclick="showCChord()">🎵 C Major Chord</button>
+                <button class="control-btn" onclick="showPowerChord()">⚡ Power Chord</button>
+                <button class="control-btn" onclick="clearNotes()">🔄 Clear</button>
+            </div>
+            
+            <div class="fretboard">
+                <!-- Wood background -->
+                <div class="fretboard-wood"></div>
+                
+                <!-- Frets -->
+                <div class="fret"></div>
+                <div class="fret"></div>
+                <div class="fret"></div>
+                <div class="fret"></div>
+                <div class="fret"></div>
+                <div class="fret"></div>
+                <div class="fret"></div>
+                <div class="fret"></div>
+                <div class="fret"></div>
+                <div class="fret"></div>
+                <div class="fret"></div>
+                <div class="fret"></div>
+                
+                <!-- Strings -->
+                <div class="string"></div> <!-- High E -->
+                <div class="string"></div> <!-- B -->
+                <div class="string"></div> <!-- G -->
+                <div class="string"></div> <!-- D -->
+                <div class="string"></div> <!-- A -->
+                <div class="string"></div> <!-- Low E -->
+                
+                <!-- Fret markers/inlays -->
+                <div class="inlay single"></div> <!-- 3rd fret -->
+                <div class="inlay single"></div> <!-- 5th fret -->
+                <div class="inlay single"></div> <!-- 7th fret -->
+                <div class="inlay single"></div> <!-- 9th fret -->
+                <div class="inlay double left"></div> <!-- 12th fret left -->
+                <div class="inlay double right"></div> <!-- 12th fret right -->
+                
+                <!-- Interactive note markers (hidden by default) -->
+                <div class="note-marker" data-string="1" data-fret="3"></div>
+                <div class="note-marker" data-string="2" data-fret="0"></div>
+                <div class="note-marker" data-string="3" data-fret="0"></div>
+                <div class="note-marker" data-string="4" data-fret="0"></div>
+                <div class="note-marker" data-string="5" data-fret="2"></div>
+                <div class="note-marker" data-string="6" data-fret="3"></div>
+            </div>
+        </div>
+        
+        <div class="info-panel">
+            <h3>🎯 Realistic Fretboard Features</h3>
+            <p>This demo shows a more authentic-looking guitar fretboard with:</p>
+            <ul>
+                <li>🌳 <strong>Wood grain texture:</strong> Realistic brown wood coloring with grain patterns</li>
+                <li>🎵 <strong>Actual strings:</strong> Six strings with realistic thickness gradients</li>
+                <li>⚡ <strong>Metal frets:</strong> Silvery fret lines with realistic shadows and highlights</li>
+                <li>💎 <strong>Inlay markers:</strong> Traditional dot inlays at the 3rd, 5th, 7th, 9th, and double dots at 12th fret</li>
+                <li>🔴 <strong>Interactive notes:</strong> Red markers show where to press for chords</li>
+            </ul>
+            <p><strong>Next step:</strong> Combine this realistic visual with alphaTab's functionality for the complete learning experience!</p>
+        </div>
+    </div>
+
+    <script>
+        // Note positions: [string, fret] (1-indexed for strings, 0-indexed for frets)
+        const chordShapes = {
+            G: [
+                [1, 3], // High E string, 3rd fret
+                [2, 0], // B string, open
+                [3, 0], // G string, open  
+                [4, 0], // D string, open
+                [5, 2], // A string, 2nd fret
+                [6, 3]  // Low E string, 3rd fret
+            ],
+            C: [
+                [1, 0], // High E string, open
+                [2, 1], // B string, 1st fret
+                [3, 0], // G string, open
+                [4, 2], // D string, 2nd fret
+                [5, 3], // A string, 3rd fret
+                [6, -1] // Low E string, not played
+            ],
+            power: [
+                [5, 3], // A string, 3rd fret
+                [6, 3]  // Low E string, 3rd fret
+            ]
+        };
+        
+        function clearNotes() {
+            document.querySelectorAll('.note-marker').forEach(marker => {
+                marker.classList.remove('active');
+            });
+        }
+        
+        function showChord(chordName) {
+            clearNotes();
+            
+            const chord = chordShapes[chordName];
+            if (!chord) return;
+            
+            chord.forEach(([string, fret]) => {
+                if (fret >= 0) {
+                    showNote(string, fret);
+                }
+            });
+        }
+        
+        function showNote(string, fret) {
+            // Create note marker if it doesn't exist
+            let marker = document.querySelector(`[data-string="${string}"][data-fret="${fret}"]`);
+            
+            if (!marker) {
+                marker = document.createElement('div');
+                marker.className = 'note-marker';
+                marker.setAttribute('data-string', string);
+                marker.setAttribute('data-fret', fret);
+                
+                // Position the marker (vertical orientation)
+                const stringPositions = [50, 100, 150, 200, 250, 300]; // X positions for strings 1-6 (left to right)
+                const fretPositions = [35, 72, 115, 152, 185, 212, 235, 254, 269, 282, 293, 302]; // Y positions for frets 0-11 (top to bottom)
+                
+                marker.style.left = stringPositions[string - 1] + 'px';
+                marker.style.top = fretPositions[fret] + 'px';
+                
+                document.querySelector('.fretboard').appendChild(marker);
+            }
+            
+            marker.classList.add('active');
+        }
+        
+        function showGChord() {
+            showChord('G');
+        }
+        
+        function showCChord() {
+            showChord('C');
+        }
+        
+        function showPowerChord() {
+            showChord('power');
+        }
+        
+        console.log('Realistic Fretboard Demo Ready! 🎸');
+    </script>
+</body>
+</html>

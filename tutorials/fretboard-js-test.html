@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎸 Fretboard.js Integration Test 🤘</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial Black', Arial, sans-serif;
+            background: 
+                linear-gradient(rgba(0, 0, 0, 0.9), rgba(20, 20, 20, 0.95)),
+                url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1200&h=800&fit=crop') center/cover;
+            background-attachment: fixed;
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 30px;
+            border-radius: 20px;
+            border: 3px solid rgba(255, 0, 0, 0.3);
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            background: linear-gradient(45deg, #ff0000, #ff6666, #ff0000);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 3s ease-in-out infinite;
+            margin-bottom: 15px;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .fretboard-container {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 20px;
+            padding: 30px;
+            border: 3px solid rgba(255, 0, 0, 0.3);
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .controls {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .control-btn {
+            background: linear-gradient(45deg, #ff0000, #ff4444);
+            border: none;
+            color: white;
+            padding: 12px 25px;
+            margin: 0 10px 10px 10px;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
+        }
+        
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 0, 0, 0.4);
+        }
+        
+        .fretboard {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .loading-message {
+            text-align: center;
+            color: #ff0000;
+            font-size: 1.2em;
+            padding: 50px;
+        }
+        
+        .info-panel {
+            background: rgba(0, 0, 0, 0.9);
+            border-radius: 20px;
+            padding: 25px;
+            border: 2px solid rgba(255, 0, 0, 0.3);
+            margin-top: 20px;
+        }
+        
+        .info-panel h3 {
+            color: #ff0000;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        
+        .info-panel p {
+            line-height: 1.6;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+    </style>
+    
+    <!-- Try to load Fretboard.js from CDN -->
+    <script src="https://unpkg.com/fretboard.js@latest/dist/fretboard.umd.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎸 Fretboard.js Integration Test</h1>
+            <p>Testing interactive fretboard library integration with our visual style</p>
+        </div>
+        
+        <div class="fretboard-container">
+            <div class="controls">
+                <button class="control-btn" onclick="showCMajorScale()">🎵 C Major Scale</button>
+                <button class="control-btn" onclick="showGChord()">🎸 G Chord</button>
+                <button class="control-btn" onclick="showPentatonic()">🔥 Pentatonic</button>
+                <button class="control-btn" onclick="clearFretboard()">🔄 Clear</button>
+            </div>
+            
+            <div class="fretboard" id="fretboard">
+                <div class="loading-message">
+                    Loading Fretboard.js library... 🎸
+                </div>
+            </div>
+        </div>
+        
+        <div class="info-panel">
+            <h3>🎯 About This Test</h3>
+            <p>This page tests the integration of Fretboard.js, an interactive SVG guitar fretboard library, with our visual design system.</p>
+            <p><strong>If the library loads successfully:</strong> You'll see an interactive fretboard above with clickable buttons to show scales and chords.</p>
+            <p><strong>If there are loading issues:</strong> We'll need to download the library locally or try alternative fretboard tools.</p>
+            <p><strong>Features we're looking for:</strong> Interactive note highlighting, scale visualization, chord shapes, and educational tools that we can style with our metal aesthetic.</p>
+        </div>
+    </div>
+
+    <script>
+        let fretboardInstance;
+        
+        // Check if Fretboard.js loaded
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('Checking for Fretboard.js...');
+            
+            // Try different possible global names for the library
+            if (typeof Fretboard !== 'undefined') {
+                console.log('Fretboard.js loaded successfully!');
+                initializeFretboard();
+            } else if (typeof fretboard !== 'undefined') {
+                console.log('Fretboard.js loaded as lowercase!');
+                window.Fretboard = window.fretboard;
+                initializeFretboard();
+            } else {
+                console.log('Fretboard.js not found, trying alternative approach...');
+                
+                // Try loading from different CDN
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/fretboard.js@latest/dist/fretboard.umd.js';
+                script.onload = function() {
+                    console.log('Alternative CDN loaded!');
+                    if (typeof Fretboard !== 'undefined') {
+                        initializeFretboard();
+                    } else {
+                        showError();
+                    }
+                };
+                script.onerror = function() {
+                    console.log('CDN loading failed');
+                    showError();
+                };
+                document.head.appendChild(script);
+            }
+        });
+        
+        function initializeFretboard() {
+            try {
+                console.log('Initializing fretboard...');
+                
+                // Clear loading message
+                document.getElementById('fretboard').innerHTML = '';
+                
+                // Create fretboard instance
+                fretboardInstance = new Fretboard({
+                    el: '#fretboard',
+                    frets: 15,
+                    strings: 6,
+                    tuning: ['E', 'A', 'D', 'G', 'B', 'E']
+                });
+                
+                console.log('Fretboard initialized successfully!');
+                
+                // Update info panel
+                document.querySelector('.info-panel').innerHTML = `
+                    <h3>✅ Fretboard.js Integration Successful!</h3>
+                    <p>The interactive fretboard is now loaded and ready. Use the buttons above to explore different scales and chords.</p>
+                    <p><strong>Next steps:</strong> We can integrate this library with our tutorials, apply our visual styling, and create custom educational content for Brenna.</p>
+                `;
+                
+            } catch (error) {
+                console.error('Error initializing fretboard:', error);
+                showError();
+            }
+        }
+        
+        function showError() {
+            document.getElementById('fretboard').innerHTML = `
+                <div class="loading-message">
+                    ❌ Fretboard.js library could not be loaded from CDN.<br><br>
+                    <strong>Solutions:</strong><br>
+                    • Download the library locally<br>
+                    • Try alternative fretboard libraries<br>
+                    • Build custom solution<br><br>
+                    <em>This is normal - we just need to find the right integration approach!</em>
+                </div>
+            `;
+            
+            document.querySelector('.info-panel').innerHTML = `
+                <h3>🔍 Library Loading Test</h3>
+                <p>The CDN approach didn't work, but that's expected - many libraries need to be downloaded locally.</p>
+                <p><strong>Alternative approaches:</strong></p>
+                <p>• Download Fretboard.js and host it locally</p>
+                <p>• Try other fretboard libraries (Fretboarder, js-fretboard)</p>
+                <p>• Use guitar-specific educational tools</p>
+                <p>• Combine with our alphaTab integration for comprehensive learning</p>
+            `;
+        }
+        
+        // Control functions (will work if library loads)
+        function showCMajorScale() {
+            if (fretboardInstance) {
+                fretboardInstance.renderScale({
+                    type: 'major',
+                    root: 'C'
+                });
+            } else {
+                alert('Fretboard not initialized yet!');
+            }
+        }
+        
+        function showGChord() {
+            if (fretboardInstance) {
+                fretboardInstance.renderChord('G');
+            } else {
+                alert('Fretboard not initialized yet!');
+            }
+        }
+        
+        function showPentatonic() {
+            if (fretboardInstance) {
+                fretboardInstance.renderScale({
+                    type: 'pentatonic',
+                    root: 'A'
+                });
+            } else {
+                alert('Fretboard not initialized yet!');
+            }
+        }
+        
+        function clearFretboard() {
+            if (fretboardInstance) {
+                fretboardInstance.clear();
+            } else {
+                alert('Fretboard not initialized yet!');
+            }
+        }
+        
+        console.log('Fretboard.js integration test ready!');
+    </script>
+</body>
+</html>

@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎸 Brain Stew - Interactive Guitar Tab 🤘</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d0f0f 50%, #000 100%);
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #ff0000;
+            text-shadow: 2px 2px 8px rgba(255, 0, 0, 0.5);
+            font-weight: bold;
+        }
+        
+        .song-info {
+            text-align: center;
+            margin-bottom: 30px;
+            background: rgba(255, 0, 0, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #ff0000;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .control-btn {
+            background: linear-gradient(135deg, #ff0000, #cc0000);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            min-width: 100px;
+        }
+        
+        .control-btn:hover {
+            background: linear-gradient(135deg, #cc0000, #990000);
+            transform: scale(1.05);
+        }
+        
+        .control-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .tempo-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 15px;
+            border-radius: 8px;
+        }
+        
+        .tempo-slider {
+            width: 120px;
+        }
+        
+        .chord-display {
+            text-align: center;
+            margin-bottom: 20px;
+            background: rgba(255, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #ff0000;
+        }
+        
+        .current-chord {
+            font-size: 2em;
+            font-weight: bold;
+            color: #ff0000;
+            margin-bottom: 10px;
+        }
+        
+        .chord-diagram {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.2;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px auto;
+            white-space: pre;
+            display: inline-block;
+        }
+        
+        .tab-container {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 2px solid #ff0000;
+        }
+        
+        .tab-line {
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            line-height: 1.8;
+            margin: 2px 0;
+            white-space: nowrap;
+            overflow-x: auto;
+        }
+        
+        .tab-note {
+            display: inline-block;
+            min-width: 15px;
+            text-align: center;
+            transition: all 0.2s;
+            border-radius: 3px;
+            padding: 2px;
+        }
+        
+        .tab-note.active {
+            background: #ff0000;
+            color: #fff;
+            font-weight: bold;
+            transform: scale(1.2);
+            box-shadow: 0 0 10px #ff0000;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff0000, #ff6666);
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+        
+        .instructions {
+            background: rgba(255, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid #ff0000;
+        }
+        
+        .instructions h3 {
+            color: #ff0000;
+            margin-bottom: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            .controls { flex-direction: column; align-items: center; }
+            .tempo-control { justify-content: center; }
+            .tab-line { font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎸 BRAIN STEW 🤘</h1>
+        
+        <div class="song-info">
+            <h3>Green Day - Brain Stew</h3>
+            <p>The perfect starter metal song! Only 2 chords: Em and G</p>
+            <p><strong>Difficulty:</strong> Beginner | <strong>Chords:</strong> Em - G</p>
+        </div>
+        
+        <div class="controls">
+            <button class="control-btn" id="playBtn" onclick="togglePlay()">▶️ PLAY</button>
+            <button class="control-btn" onclick="resetSong()">⏹️ RESET</button>
+            <div class="tempo-control">
+                <label>Tempo:</label>
+                <input type="range" id="tempoSlider" class="tempo-slider" min="50" max="150" value="80" onchange="updateTempo()">
+                <span id="tempoDisplay">80 BPM</span>
+            </div>
+        </div>
+        
+        <div class="chord-display">
+            <div class="current-chord" id="currentChord">Em</div>
+            <div class="chord-diagram" id="chordDiagram">E |---0---
+B |---0---
+G |---0---
+D |---2---
+A |---2---
+E |---0---</div>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        
+        <div class="tab-container">
+            <h3 style="color: #ff0000; margin-bottom: 15px;">🎵 Interactive Tablature - Watch the Red Highlights!</h3>
+            <div class="tab-line">E |<span class="tab-note" data-beat="0">-</span><span class="tab-note" data-beat="1">0</span><span class="tab-note" data-beat="2">-</span><span class="tab-note" data-beat="3">-</span><span class="tab-note" data-beat="4">-</span><span class="tab-note" data-beat="5">0</span><span class="tab-note" data-beat="6">-</span><span class="tab-note" data-beat="7">-</span><span class="tab-note" data-beat="8">-</span><span class="tab-note" data-beat="9">3</span><span class="tab-note" data-beat="10">-</span><span class="tab-note" data-beat="11">-</span><span class="tab-note" data-beat="12">-</span><span class="tab-note" data-beat="13">3</span><span class="tab-note" data-beat="14">-</span><span class="tab-note" data-beat="15">-</span>|</div>
+            <div class="tab-line">B |<span class="tab-note" data-beat="0">-</span><span class="tab-note" data-beat="1">0</span><span class="tab-note" data-beat="2">-</span><span class="tab-note" data-beat="3">-</span><span class="tab-note" data-beat="4">-</span><span class="tab-note" data-beat="5">0</span><span class="tab-note" data-beat="6">-</span><span class="tab-note" data-beat="7">-</span><span class="tab-note" data-beat="8">-</span><span class="tab-note" data-beat="9">0</span><span class="tab-note" data-beat="10">-</span><span class="tab-note" data-beat="11">-</span><span class="tab-note" data-beat="12">-</span><span class="tab-note" data-beat="13">0</span><span class="tab-note" data-beat="14">-</span><span class="tab-note" data-beat="15">-</span>|</div>
+            <div class="tab-line">G |<span class="tab-note" data-beat="0">-</span><span class="tab-note" data-beat="1">0</span><span class="tab-note" data-beat="2">-</span><span class="tab-note" data-beat="3">-</span><span class="tab-note" data-beat="4">-</span><span class="tab-note" data-beat="5">0</span><span class="tab-note" data-beat="6">-</span><span class="tab-note" data-beat="7">-</span><span class="tab-note" data-beat="8">-</span><span class="tab-note" data-beat="9">0</span><span class="tab-note" data-beat="10">-</span><span class="tab-note" data-beat="11">-</span><span class="tab-note" data-beat="12">-</span><span class="tab-note" data-beat="13">0</span><span class="tab-note" data-beat="14">-</span><span class="tab-note" data-beat="15">-</span>|</div>
+            <div class="tab-line">D |<span class="tab-note" data-beat="0">-</span><span class="tab-note" data-beat="1">2</span><span class="tab-note" data-beat="2">-</span><span class="tab-note" data-beat="3">-</span><span class="tab-note" data-beat="4">-</span><span class="tab-note" data-beat="5">2</span><span class="tab-note" data-beat="6">-</span><span class="tab-note" data-beat="7">-</span><span class="tab-note" data-beat="8">-</span><span class="tab-note" data-beat="9">0</span><span class="tab-note" data-beat="10">-</span><span class="tab-note" data-beat="11">-</span><span class="tab-note" data-beat="12">-</span><span class="tab-note" data-beat="13">0</span><span class="tab-note" data-beat="14">-</span><span class="tab-note" data-beat="15">-</span>|</div>
+            <div class="tab-line">A |<span class="tab-note" data-beat="0">-</span><span class="tab-note" data-beat="1">2</span><span class="tab-note" data-beat="2">-</span><span class="tab-note" data-beat="3">-</span><span class="tab-note" data-beat="4">-</span><span class="tab-note" data-beat="5">2</span><span class="tab-note" data-beat="6">-</span><span class="tab-note" data-beat="7">-</span><span class="tab-note" data-beat="8">-</span><span class="tab-note" data-beat="9">2</span><span class="tab-note" data-beat="10">-</span><span class="tab-note" data-beat="11">-</span><span class="tab-note" data-beat="12">-</span><span class="tab-note" data-beat="13">2</span><span class="tab-note" data-beat="14">-</span><span class="tab-note" data-beat="15">-</span>|</div>
+            <div class="tab-line">E |<span class="tab-note" data-beat="0">-</span><span class="tab-note" data-beat="1">0</span><span class="tab-note" data-beat="2">-</span><span class="tab-note" data-beat="3">-</span><span class="tab-note" data-beat="4">-</span><span class="tab-note" data-beat="5">0</span><span class="tab-note" data-beat="6">-</span><span class="tab-note" data-beat="7">-</span><span class="tab-note" data-beat="8">-</span><span class="tab-note" data-beat="9">3</span><span class="tab-note" data-beat="10">-</span><span class="tab-note" data-beat="11">-</span><span class="tab-note" data-beat="12">-</span><span class="tab-note" data-beat="13">3</span><span class="tab-note" data-beat="14">-</span><span class="tab-note" data-beat="15">-</span>|</div>
+        </div>
+        
+        <div class="instructions">
+            <h3>🤘 How to Use This Badass Tool:</h3>
+            <ul style="line-height: 1.6;">
+                <li><strong>Hit PLAY</strong> and watch the red highlights move across the tab</li>
+                <li><strong>Follow along</strong> with your guitar - play the notes as they light up</li>
+                <li><strong>Start slow</strong> with the tempo slider (50-80 BPM is good for learning)</li>
+                <li><strong>The chord diagram above</strong> shows what your left hand should be doing</li>
+                <li><strong>Em = beats 1-8, G = beats 9-16</strong> - just like the real song!</li>
+                <li><strong>Once you nail it slow, crank up the tempo!</strong> 🔥</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        let isPlaying = false;
+        let currentBeat = 0;
+        let tempo = 80; // BPM
+        let intervalId = null;
+        let totalBeats = 16;
+        
+        // Audio context for generating guitar tones
+        let audioContext = null;
+        
+        const chordDiagrams = {
+            'Em': `E |---0---
+B |---0---
+G |---0---
+D |---2---
+A |---2---
+E |---0---`,
+            'G': `E |---3---
+B |---0---
+G |---0---
+D |---0---
+A |---2---
+E |---3---`
+        };
+        
+        // Note frequencies for guitar strings (standard tuning)
+        const stringFrequencies = {
+            'E': [82.41, 329.63], // Low E, High E
+            'A': 110.00,
+            'D': 146.83,
+            'G': 196.00,
+            'B': 246.94
+        };
+        
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+        
+        function playNote(frequency, duration = 0.5) {
+            if (!audioContext) return;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+            oscillator.type = 'sawtooth'; // Guitar-like tone
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + duration);
+        }
+        
+        function togglePlay() {
+            if (isPlaying) {
+                pauseSong();
+            } else {
+                playSong();
+            }
+        }
+        
+        function playSong() {
+            initAudio();
+            isPlaying = true;
+            document.getElementById('playBtn').textContent = '⏸️ PAUSE';
+            
+            const beatDuration = 60000 / tempo; // milliseconds per beat
+            
+            intervalId = setInterval(() => {
+                highlightCurrentBeat();
+                updateChordDisplay();
+                updateProgress();
+                playCurrentNotes();
+                
+                currentBeat++;
+                if (currentBeat >= totalBeats) {
+                    currentBeat = 0; // Loop the song
+                }
+            }, beatDuration);
+        }
+        
+        function pauseSong() {
+            isPlaying = false;
+            document.getElementById('playBtn').textContent = '▶️ PLAY';
+            if (intervalId) {
+                clearInterval(intervalId);
+                intervalId = null;
+            }
+            clearHighlights();
+        }
+        
+        function resetSong() {
+            pauseSong();
+            currentBeat = 0;
+            clearHighlights();
+            updateProgress();
+            updateChordDisplay();
+        }
+        
+        function highlightCurrentBeat() {
+            clearHighlights();
+            const activeNotes = document.querySelectorAll(`[data-beat="${currentBeat}"]`);
+            activeNotes.forEach(note => {
+                note.classList.add('active');
+            });
+        }
+        
+        function clearHighlights() {
+            document.querySelectorAll('.tab-note.active').forEach(note => {
+                note.classList.remove('active');
+            });
+        }
+        
+        function updateChordDisplay() {
+            const chord = currentBeat < 8 ? 'Em' : 'G';
+            document.getElementById('currentChord').textContent = chord;
+            document.getElementById('chordDiagram').textContent = chordDiagrams[chord];
+        }
+        
+        function updateProgress() {
+            const progress = (currentBeat / totalBeats) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+        
+        function updateTempo() {
+            tempo = parseInt(document.getElementById('tempoSlider').value);
+            document.getElementById('tempoDisplay').textContent = tempo + ' BPM';
+            
+            if (isPlaying) {
+                pauseSong();
+                playSong(); // Restart with new tempo
+            }
+        }
+        
+        function playCurrentNotes() {
+            // Simple chord-based playback
+            if (currentBeat === 1 || currentBeat === 5) {
+                // Em chord
+                playNote(82.41, 0.5); // Low E
+                playNote(110.00, 0.5); // A
+            } else if (currentBeat === 9 || currentBeat === 13) {
+                // G chord
+                playNote(82.41, 0.5); // Low E
+                playNote(110.00, 0.5); // A
+                playNote(196.00, 0.5); // G
+            }
+        }
+        
+        // Initialize display
+        updateChordDisplay();
+        updateProgress();
+    </script>
+</body>
+</html>

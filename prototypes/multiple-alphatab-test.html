@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎸 Multiple alphaTab Test - Modular Lessons 🤘</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d0f0f 50%, #000 100%);
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #ff0000;
+            text-shadow: 2px 2px 8px rgba(255, 0, 0, 0.5);
+            font-weight: bold;
+        }
+        
+        .lesson-block {
+            background: rgba(255, 0, 0, 0.1);
+            margin-bottom: 30px;
+            border-radius: 10px;
+            padding: 20px;
+            border: 2px solid rgba(255, 0, 0, 0.3);
+        }
+        
+        .lesson-title {
+            font-size: 1.5em;
+            color: #ff0000;
+            margin-bottom: 10px;
+        }
+        
+        .lesson-description {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: #ccc;
+        }
+        
+        .canvas-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            overflow-x: auto;
+            overflow-y: auto;
+            max-width: 100%;
+            height: 200px;
+        }
+        
+        .controls {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .btn {
+            background: #ff0000;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            margin: 0 5px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #cc0000;
+        }
+        
+        /* alphaTab cursor styles - note level highlighting */
+        .at-cursor-bar {
+            background: transparent !important;
+        }
+        
+        .at-cursor-beat {
+            background: transparent !important;
+        }
+        
+        /* Note highlighting when played */
+        .at-highlight * {
+            fill: #ff0000 !important;
+            stroke: #ff0000 !important;
+            color: #ff0000 !important;
+        }
+    </style>
+    
+    <!-- alphaTab CDN Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@coderline/alphatab@latest/dist/alphaTab.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>🎸 Multiple alphaTab Canvas Test 🤘</h1>
+        
+        <!-- Lesson 1: Basic Open Chords -->
+        <div class="lesson-block">
+            <div class="lesson-title">📚 Lesson 1: Basic Open Chords</div>
+            <div class="lesson-description">
+                Let's start with the most basic guitar chords. These are called "open chords" because they use open strings (strings you don't press down). 
+                In this example, you'll hear and see a simple progression using basic chords.
+            </div>
+            <div class="controls">
+                <input type="button" class="btn" id="play1" value="▶ Play Example"/>
+                <input type="button" class="btn" id="stop1" value="⏹ Stop"/>
+            </div>
+            <div class="canvas-container">
+                <div id="canvas1">
+                    <div style="text-align: center; color: #333; padding: 50px;">
+                        🎸 Canvas 1 - Loading basic chord example...
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Lesson 2: Power Chords -->
+        <div class="lesson-block">
+            <div class="lesson-title">🔥 Lesson 2: Power Chords (The Metal Foundation)</div>
+            <div class="lesson-description">
+                Power chords are the backbone of rock and metal! They're easier than full chords and sound HUGE. 
+                A power chord uses just 2-3 strings and gives you that chunky, aggressive sound you hear in your favorite songs.
+            </div>
+            <div class="controls">
+                <input type="button" class="btn" id="play2" value="▶ Play Example"/>
+                <input type="button" class="btn" id="stop2" value="⏹ Stop"/>
+            </div>
+            <div class="canvas-container">
+                <div id="canvas2">
+                    <div style="text-align: center; color: #333; padding: 50px;">
+                        🎸 Canvas 2 - Loading power chord example...
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Lesson 3: Palm Muting -->
+        <div class="lesson-block">
+            <div class="lesson-title">🤚 Lesson 3: Palm Muting Technique</div>
+            <div class="lesson-description">
+                Palm muting is a crucial metal technique! You lightly rest the side of your picking hand on the strings near the bridge. 
+                This creates that tight, chunky sound you hear in heavy music. It's marked with "P.M." in tablature.
+            </div>
+            <div class="controls">
+                <input type="button" class="btn" id="play3" value="▶ Play Example"/>
+                <input type="button" class="btn" id="stop3" value="⏹ Stop"/>
+            </div>
+            <div class="canvas-container">
+                <div id="canvas3">
+                    <div style="text-align: center; color: #333; padding: 50px;">
+                        🎸 Canvas 3 - Loading palm muting example...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        console.log('Multiple alphaTab Test Starting...');
+        
+        // Store multiple API instances
+        const apis = {};
+        
+        // Settings template
+        function getAlphaTabSettings() {
+            return {
+                core: {
+                    engine: 'svg'
+                },
+                display: {
+                    layoutMode: 'page',
+                    staveProfile: 'TabMixed'
+                },
+                player: {
+                    enablePlayer: true,
+                    enableCursor: true,
+                    enableUserInteraction: true,
+                    soundFont: 'https://cdn.jsdelivr.net/npm/@coderline/alphatab@latest/dist/soundfont/sonivox.sf2',
+                    audioBufferSize: 2048,
+                    enableElementHighlighting: true
+                }
+            };
+        }
+        
+        // Initialize multiple alphaTab instances
+        function initializeCanvas(canvasId, apiKey) {
+            console.log(`Initializing ${canvasId}...`);
+            
+            const settings = getAlphaTabSettings();
+            settings.player.scrollElement = `#${canvasId}`;
+            
+            apis[apiKey] = new alphaTab.AlphaTabApi(document.getElementById(canvasId), settings);
+            
+            // For now, load the same Brain Stew file in all canvases
+            // In real implementation, each would load different GP files for different lessons
+            fetch('../assets/brain-stew.gp3')
+                .then(response => response.arrayBuffer())
+                .then(data => {
+                    apis[apiKey].load(data);
+                })
+                .catch(error => {
+                    console.error(`Error loading in ${canvasId}:`, error);
+                    document.getElementById(canvasId).innerHTML = `
+                        <div style="text-align: center; color: #333; padding: 20px;">
+                            ❌ Error loading example
+                        </div>
+                    `;
+                });
+            
+            // Event listeners
+            apis[apiKey].scoreLoaded.on((score) => {
+                console.log(`Score loaded in ${canvasId}`);
+            });
+            
+            apis[apiKey].renderFinished.on(() => {
+                console.log(`Rendering finished in ${canvasId}`);
+            });
+            
+            apis[apiKey].error.on((error) => {
+                console.error(`alphaTab Error in ${canvasId}:`, error);
+            });
+        }
+        
+        // Auto-load all canvases on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('Initializing multiple alphaTab canvases...');
+            initializeCanvas('canvas1', 'api1');
+            initializeCanvas('canvas2', 'api2');
+            initializeCanvas('canvas3', 'api3');
+        });
+        
+        // Control buttons for Canvas 1
+        document.getElementById('play1').addEventListener('click', function() {
+            if (apis.api1) {
+                if (apis.api1.isPlaying) {
+                    apis.api1.pause();
+                } else {
+                    apis.api1.play();
+                }
+            }
+        });
+        
+        document.getElementById('stop1').addEventListener('click', function() {
+            if (apis.api1) apis.api1.stop();
+        });
+        
+        // Control buttons for Canvas 2
+        document.getElementById('play2').addEventListener('click', function() {
+            if (apis.api2) {
+                if (apis.api2.isPlaying) {
+                    apis.api2.pause();
+                } else {
+                    apis.api2.play();
+                }
+            }
+        });
+        
+        document.getElementById('stop2').addEventListener('click', function() {
+            if (apis.api2) apis.api2.stop();
+        });
+        
+        // Control buttons for Canvas 3
+        document.getElementById('play3').addEventListener('click', function() {
+            if (apis.api3) {
+                if (apis.api3.isPlaying) {
+                    apis.api3.pause();
+                } else {
+                    apis.api3.play();
+                }
+            }
+        });
+        
+        document.getElementById('stop3').addEventListener('click', function() {
+            if (apis.api3) apis.api3.stop();
+        });
+        
+        console.log('Multiple alphaTab Test Ready!');
+    </script>
+</body>
+</html>

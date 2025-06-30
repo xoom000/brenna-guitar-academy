@@ -314,31 +314,52 @@
             };
         }
         
-        // Create simple Guitar Pro content programmatically for basic examples
-        // For now, we'll use the Brain Stew file for all examples
-        // In production, we'd create specific GP files for each lesson
-        
-        function initializeAlphaTab(containerId, apiKey, description) {
-            console.log(`Initializing ${containerId}...`);
+        // Create different content for each lesson example
+        function initializeAlphaTab(containerId, apiKey, description, lessonType) {
+            console.log(`Initializing ${containerId} for ${lessonType}...`);
             
             const settings = getAlphaTabSettings(`#${containerId}`);
             apis[apiKey] = new alphaTab.AlphaTabApi(document.getElementById(containerId), settings);
             
-            // Load Brain Stew file (we'll create specific files for each lesson later)
-            fetch('../assets/brain-stew.gp3')
-                .then(response => response.arrayBuffer())
-                .then(data => {
-                    apis[apiKey].load(data);
-                })
-                .catch(error => {
-                    console.error(`Error loading in ${containerId}:`, error);
-                    document.getElementById(containerId).innerHTML = `
-                        <div class="loading-message">
-                            ❌ Error loading ${description}<br>
-                            <small>Check console for details</small>
-                        </div>
-                    `;
-                });
+            // Load different content based on lesson type
+            if (lessonType === 'single-notes') {
+                // Create simple single note example using alphaTab's tex notation
+                const singleNotesTeX = `
+                \\title "Simple Single Notes"
+                \\subtitle "Your First Fret Exercise"
+                \\tempo 120
+                .
+                0.6 3.6 5.6 3.6 | 0.5 3.5 5.5 3.5 | 0.4 3.4 5.4 3.4 | 0.3 3.3 5.3 3.3
+                `;
+                apis[apiKey].tex(singleNotesTeX);
+            } else if (lessonType === 'power-chords') {
+                // Create power chord progression
+                const powerChordsTeX = `
+                \\title "Power Chord Progression"
+                \\subtitle "E5 - A5 - D5 - A5"
+                \\tempo 100
+                .
+                (0.6 2.5).2 (0.6 2.5).2 (0.6 2.5).2 (0.6 2.5).2 | (0.5 2.4).2 (0.5 2.4).2 (0.5 2.4).2 (0.5 2.4).2 | (2.6 4.5).2 (2.6 4.5).2 (2.6 4.5).2 (2.6 4.5).2 | (0.5 2.4).2 (0.5 2.4).2 (0.5 2.4).2 (0.5 2.4).2
+                `;
+                apis[apiKey].tex(powerChordsTeX);
+            } else {
+                // Load Brain Stew file for real song example
+                fetch('../assets/brain-stew.gp3')
+                    .then(response => response.arrayBuffer())
+                    .then(data => {
+                        apis[apiKey].load(data);
+                    })
+                    .catch(error => {
+                        console.error(`Error loading Brain Stew:`, error);
+                        document.getElementById(containerId).innerHTML = `
+                            <div class="loading-message">
+                                ❌ Error loading ${description}<br>
+                                <small>Check console for details</small>
+                            </div>
+                        `;
+                    });
+                return; // Exit early for Brain Stew
+            }
             
             // Event listeners
             apis[apiKey].scoreLoaded.on((score) => {
@@ -365,9 +386,9 @@
         // Initialize all alphaTab instances
         window.addEventListener('DOMContentLoaded', function() {
             console.log('Loading interactive tablature examples...');
-            initializeAlphaTab('alphatab1', 'api1', 'single notes example');
-            initializeAlphaTab('alphatab2', 'api2', 'power chord progression');
-            initializeAlphaTab('alphatab3', 'api3', 'Brain Stew');
+            initializeAlphaTab('alphatab1', 'api1', 'single notes example', 'single-notes');
+            initializeAlphaTab('alphatab2', 'api2', 'power chord progression', 'power-chords');
+            initializeAlphaTab('alphatab3', 'api3', 'Brain Stew', 'brain-stew');
         });
         
         // Control buttons for Example 1

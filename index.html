@@ -62,100 +62,128 @@
             line-height: 1.6;
         }
         
+        .quick-start {
+            background: rgba(255, 0, 0, 0.1);
+            border: 2px solid #ff0000;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px auto;
+            max-width: 500px;
+        }
+        
+        .quick-start h3 {
+            color: #ff0000;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 40px 20px;
         }
         
-        .section-title {
-            text-align: center;
-            font-size: 2.5em;
-            color: #ff0000;
-            margin: 50px 0 30px 0;
-            font-weight: 900;
+        .learning-path {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
         }
         
-        /* Interactive Lesson Sections */
-        .lesson-section {
+        .lesson-card {
             background: rgba(0, 0, 0, 0.8);
             border-radius: 20px;
             padding: 30px;
-            margin-bottom: 40px;
-            border: 2px solid rgba(255, 0, 0, 0.3);
+            border: 2px solid #333;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
         
-        .lesson-section:hover {
+        .lesson-card:hover {
             border-color: #ff0000;
+            transform: translateY(-5px);
             box-shadow: 0 10px 30px rgba(255, 0, 0, 0.2);
         }
         
-        .lesson-header {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 20px;
+        .lesson-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff0000, #ff6666);
         }
         
         .lesson-number {
             background: #ff0000;
             color: white;
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 1.5em;
-        }
-        
-        .lesson-info h3 {
-            color: #ff6666;
-            font-size: 1.8em;
-            margin-bottom: 5px;
-        }
-        
-        .lesson-info p {
-            color: #ccc;
-            font-size: 1.1em;
-        }
-        
-        /* alphaTab Container */
-        .alphatab-container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 20px;
-            margin: 20px 0;
-            min-height: 300px;
-            color: #000;
-        }
-        
-        .alphatab-controls {
-            text-align: center;
             margin-bottom: 15px;
-            background: rgba(0, 0, 0, 0.1);
-            padding: 15px;
-            border-radius: 10px;
+            font-size: 1.2em;
+        }
+        
+        .lesson-card h3 {
+            color: #ff6666;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+        
+        .lesson-card p {
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .lesson-features {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+        
+        .lesson-features li {
+            color: #aaa;
+            margin: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .lesson-features li::before {
+            content: '🤘';
+            position: absolute;
+            left: 0;
         }
         
         .btn {
-            background: #ff0000;
+            background: linear-gradient(45deg, #ff0000, #cc0000);
             color: white;
             border: none;
-            padding: 10px 20px;
-            margin: 5px;
-            border-radius: 8px;
-            font-size: 14px;
+            padding: 12px 25px;
+            border-radius: 10px;
             cursor: pointer;
+            font-size: 16px;
             font-weight: bold;
-            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-align: center;
         }
         
         .btn:hover {
-            background: #cc0000;
             transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
+            background: linear-gradient(45deg, #ff3333, #ff0000);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
         }
         
         .btn.secondary {
@@ -166,28 +194,6 @@
         .btn.secondary:hover {
             background: rgba(255, 255, 255, 0.2);
             border-color: #ff0000;
-        }
-        
-        /* alphaTab cursor styles */
-        .at-cursor-bar {
-            background: transparent !important;
-        }
-        
-        .at-cursor-beat {
-            background: transparent !important;
-        }
-        
-        .at-highlight * {
-            fill: #ff0000 !important;
-            stroke: #ff0000 !important;
-            color: #ff0000 !important;
-        }
-        
-        .loading-message {
-            text-align: center;
-            color: #333;
-            padding: 80px 20px;
-            font-size: 18px;
         }
         
         .features-grid {
@@ -221,6 +227,33 @@
             line-height: 1.5;
         }
         
+        .section-title {
+            text-align: center;
+            font-size: 2.5em;
+            color: #ff0000;
+            margin: 50px 0 30px 0;
+            font-weight: 900;
+        }
+        
+        .quick-links {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+        }
+        
+        .quick-links h3 {
+            color: #ff6666;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
         .footer {
             background: rgba(0, 0, 0, 0.9);
             text-align: center;
@@ -239,103 +272,106 @@
                 font-size: 2.5em;
             }
             
+            .learning-path {
+                grid-template-columns: 1fr;
+            }
+            
             .container {
                 padding: 20px 15px;
             }
         }
+        
+        .status-badge {
+            background: #00ff00;
+            color: #000;
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .status-badge.coming-soon {
+            background: #ffa500;
+        }
+        
+        .status-badge.prototype {
+            background: #ff6600;
+        }
     </style>
-    
-    <!-- alphaTab CDN Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/@coderline/alphatab@latest/dist/alphaTab.js"></script>
 </head>
 <body>
     <div class="hero">
         <h1>🎸 Brenna's Guitar Academy 🤘</h1>
         <div class="hero-subtitle">Learn Metal Guitar The Right Way</div>
         <p class="hero-description">
-            Interactive guitar lessons with real tablature that lights up as you play. 
-            No boring folk songs - just pure metal education!
+            Forget boring folk songs and cheesy exercises. Learn guitar through the metal songs you actually love, 
+            with interactive tablature that lights up as you play!
         </p>
+        
+        <div class="quick-start">
+            <h3>🚀 New to Guitar?</h3>
+            <p>Start with our tablature basics lesson - learn to read the language of metal!</p>
+            <a href="tutorials/tablature-explained.html" class="btn" style="margin-top: 15px;">
+                Start Learning Now! 🔥
+            </a>
+        </div>
     </div>
     
     <div class="container">
-        <h2 class="section-title">🎯 Interactive Lessons</h2>
+        <h2 class="section-title">🎯 Your Learning Path</h2>
         
-        <!-- Lesson 1: Tablature Basics -->
-        <div class="lesson-section">
-            <div class="lesson-header">
+        <div class="learning-path">
+            <div class="lesson-card">
                 <div class="lesson-number">1</div>
-                <div class="lesson-info">
-                    <h3>Tablature Basics & First Notes</h3>
-                    <p>Learn to read guitar tablature with interactive examples that light up in real-time</p>
-                </div>
+                <h3>Tablature Basics <span class="status-badge">Ready</span></h3>
+                <p>Learn to read guitar tablature - the fastest way to learn metal songs without boring music theory.</p>
+                <ul class="lesson-features">
+                    <li>Interactive examples</li>
+                    <li>Visual fretboard connection</li>
+                    <li>Simple power chord intro</li>
+                    <li>Mobile-friendly design</li>
+                </ul>
+                <a href="tutorials/tablature-explained-alphatab.html" class="btn">Start Lesson 1</a>
             </div>
             
-            <div class="alphatab-container">
-                <div class="alphatab-controls">
-                    <button class="btn" id="play1">▶ Play Example</button>
-                    <button class="btn" id="stop1">⏹ Stop</button>
-                    <button class="btn" id="slow1">🐌 Slow Speed</button>
-                    <button class="btn" id="normal1">⚡ Normal Speed</button>
-                </div>
-                <div id="alphatab1">
-                    <div class="loading-message">
-                        🎸 Loading tablature basics example...<br>
-                        <small>Watch how each note lights up red as it plays!</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Lesson 2: Techniques - Slides, Hammer-ons, Pull-offs -->
-        <div class="lesson-section">
-            <div class="lesson-header">
+            <div class="lesson-card">
                 <div class="lesson-number">2</div>
-                <div class="lesson-info">
-                    <h3>Metal Techniques: Slides, Hammer-ons & Pull-offs</h3>
-                    <p>Master the essential techniques that make metal guitar sound awesome</p>
-                </div>
+                <h3>Your First Metal Riff <span class="status-badge">Ready</span></h3>
+                <p>Jump straight into playing Brain Stew by Green Day - perfect for beginners and sounds amazing!</p>
+                <ul class="lesson-features">
+                    <li>Real audio playback</li>
+                    <li>Note-by-note highlighting</li>
+                    <li>Tempo control</li>
+                    <li>Professional Guitar Pro files</li>
+                </ul>
+                <a href="prototypes/brain-stew-v2-real-audio.html" class="btn">Play Brain Stew!</a>
             </div>
             
-            <div class="alphatab-container">
-                <div class="alphatab-controls">
-                    <button class="btn" id="play2">▶ Play Techniques</button>
-                    <button class="btn" id="stop2">⏹ Stop</button>
-                    <button class="btn" id="slow2">🐌 Practice Slowly</button>
-                    <button class="btn" id="normal2">🔥 Full Speed</button>
-                </div>
-                <div id="alphatab2">
-                    <div class="loading-message">
-                        🤘 Loading metal techniques example...<br>
-                        <small>Slides, hammer-ons, and pull-offs!</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Lesson 3: Brain Stew -->
-        <div class="lesson-section">
-            <div class="lesson-header">
+            <div class="lesson-card">
                 <div class="lesson-number">3</div>
-                <div class="lesson-info">
-                    <h3>Your First Song: Brain Stew by Green Day</h3>
-                    <p>Play a real metal song with full Guitar Pro tablature and backing track</p>
-                </div>
+                <h3>Power Chords & Metal Techniques <span class="status-badge coming-soon">Coming Soon</span></h3>
+                <p>Master the foundation of metal guitar - power chords, palm muting, and aggressive playing.</p>
+                <ul class="lesson-features">
+                    <li>Power chord shapes</li>
+                    <li>Palm muting technique</li>
+                    <li>Metal rhythm patterns</li>
+                    <li>Multiple song examples</li>
+                </ul>
+                <a href="#" class="btn secondary">Coming Soon</a>
             </div>
             
-            <div class="alphatab-container">
-                <div class="alphatab-controls">
-                    <button class="btn" id="play3">▶ Play Brain Stew</button>
-                    <button class="btn" id="stop3">⏹ Stop</button>
-                    <button class="btn" id="slow3">🐌 Learn Mode</button>
-                    <button class="btn" id="normal3">🎸 Rock Out!</button>
-                </div>
-                <div id="alphatab3">
-                    <div class="loading-message">
-                        🎵 Loading Brain Stew by Green Day...<br>
-                        <small>Full song with professional Guitar Pro file!</small>
-                    </div>
-                </div>
+            <div class="lesson-card">
+                <div class="lesson-number">4</div>
+                <h3>Song Library <span class="status-badge coming-soon">Coming Soon</span></h3>
+                <p>Expand your skills with more metal classics - Ghost, Metallica, System of a Down, and more!</p>
+                <ul class="lesson-features">
+                    <li>Mary On A Cross (Ghost)</li>
+                    <li>Nothing Else Matters (Metallica)</li>
+                    <li>Chop Suey intro (SOAD)</li>
+                    <li>Custom difficulty levels</li>
+                </ul>
+                <a href="#" class="btn secondary">Coming Soon</a>
             </div>
         </div>
         
@@ -345,13 +381,13 @@
             <div class="feature-box">
                 <div class="feature-icon">🎸</div>
                 <h4>Real Metal Songs</h4>
-                <p>Learn through songs you actually want to play, not boring exercises.</p>
+                <p>Learn through songs you actually want to play, not boring exercises from the 1960s.</p>
             </div>
             
             <div class="feature-box">
                 <div class="feature-icon">🔥</div>
                 <h4>Interactive Tablature</h4>
-                <p>See exactly when to play each note with real-time highlighting.</p>
+                <p>See exactly when to play each note with real-time highlighting and audio.</p>
             </div>
             
             <div class="feature-box">
@@ -365,6 +401,29 @@
                 <h4>Metal Aesthetic</h4>
                 <p>Dark theme and brutal design that matches your musical taste.</p>
             </div>
+            
+            <div class="feature-box">
+                <div class="feature-icon">⚡</div>
+                <h4>No Registration Required</h4>
+                <p>Just open and play - no accounts, no payments, no bullshit.</p>
+            </div>
+            
+            <div class="feature-box">
+                <div class="feature-icon">🎯</div>
+                <h4>Beginner-Friendly</h4>
+                <p>Start from absolute zero and work up to shredding metal riffs.</p>
+            </div>
+        </div>
+        
+        <div class="quick-links">
+            <h3>🔗 Quick Access</h3>
+            <div class="links-grid">
+                <a href="tutorials/" class="btn secondary">All Tutorials</a>
+                <a href="prototypes/" class="btn secondary">Prototypes & Demos</a>
+                <a href="tutorials/fretboard-teacher-alphatab.html" class="btn secondary">Fretboard Teacher</a>
+                <a href="tutorials/fundamentals-tutorial-alphatab.html" class="btn secondary">Guitar Fundamentals</a>
+                <a href="tutorials/guitar-anatomy-alphatab.html" class="btn secondary">Guitar Anatomy</a>
+            </div>
         </div>
     </div>
     
@@ -375,196 +434,46 @@
     </div>
     
     <script>
-        console.log('Brenna\'s Guitar Academy - Integrated Lessons Starting...');
-        
-        // Store alphaTab API instances
-        const apis = {};
-        
-        // alphaTab settings template with guitar-only configuration
-        function getAlphaTabSettings(scrollElement) {
-            return {
-                core: {
-                    engine: 'svg',
-                    logLevel: 'info'
-                },
-                display: {
-                    layoutMode: 'page',
-                    staveProfile: 'Tab',  // Tab only, no standard notation
-                    resources: {
-                        // Force guitar-only display
-                        staffLineColor: 'rgba(0, 0, 0, 0.1)',
-                        barNumberColor: '#333'
-                    }
-                },
-                player: {
-                    enablePlayer: true,
-                    enableCursor: true,
-                    enableUserInteraction: true,
-                    soundFont: 'https://cdn.jsdelivr.net/npm/@coderline/alphatab@latest/dist/soundfont/sonivox.sf2',
-                    scrollElement: scrollElement,
-                    audioBufferSize: 2048,
-                    enableElementHighlighting: true
-                },
-                notation: {
-                    elements: {
-                        // Show only guitar-relevant elements
-                        scoreTitle: true,
-                        scoreSubTitle: true,
-                        scoreArtist: true,
-                        guitarTuning: true
-                    }
-                }
+        // Add some interactive sparkle
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate lesson cards on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
             };
-        }
-        
-        // Initialize Lesson 1: Tablature Basics
-        function initializeLesson1() {
-            console.log('Initializing Lesson 1: Tablature Basics...');
             
-            const settings = getAlphaTabSettings('#alphatab1');
-            apis.api1 = new alphaTab.AlphaTabApi(document.getElementById('alphatab1'), settings);
-            
-            // Simple single note exercise with guitar track specified
-            const tablatureBasicsTeX = `
-            \\title "Tablature Basics"
-            \\subtitle "Simple Notes on Each String"
-            \\tempo 100
-            \\track "Guitar"
-            \\staff{score} \\tuning guitar \\instrument acousticguitarsteel
-            |
-            0.6.4 0.5.4 0.4.4 0.3.4 | 3.6.4 3.5.4 3.4.4 3.3.4 | 5.6.4 5.5.4 5.4.4 5.3.4 | 3.6.4 3.5.4 3.4.4 3.3.4
-            `;
-            
-            apis.api1.tex(tablatureBasicsTeX);
-            
-            apis.api1.scoreLoaded.on(() => console.log('Lesson 1 loaded'));
-            apis.api1.soundFontLoad.on(() => console.log('Lesson 1 audio ready'));
-            apis.api1.error.on(error => console.error('Lesson 1 error:', error));
-        }
-        
-        // Initialize Lesson 2: Techniques
-        function initializeLesson2() {
-            console.log('Initializing Lesson 2: Metal Techniques...');
-            
-            const settings = getAlphaTabSettings('#alphatab2');
-            apis.api2 = new alphaTab.AlphaTabApi(document.getElementById('alphatab2'), settings);
-            
-            // Slides, hammer-ons, and pull-offs
-            const techniquesTeX = `
-            \\title "Metal Techniques"
-            \\subtitle "Slides, Hammer-ons & Pull-offs"
-            \\tempo 90
-            \\track "Guitar"
-            \\staff{score} \\tuning guitar \\instrument electricguitarclean
-            |
-            3.3{sl}5.3.4 | 0.3{h}2.3{h}3.3.4 | 3.3{p}2.3{p}0.3.4 | 5.4{sl}7.4.4 | 0.4{h}3.4{h}5.4.4 | 5.4{p}3.4{p}0.4.4
-            `;
-            
-            apis.api2.tex(techniquesTeX);
-            
-            apis.api2.scoreLoaded.on(() => console.log('Lesson 2 loaded'));
-            apis.api2.soundFontLoad.on(() => console.log('Lesson 2 audio ready'));
-            apis.api2.error.on(error => console.error('Lesson 2 error:', error));
-        }
-        
-        // Initialize Lesson 3: Brain Stew
-        function initializeLesson3() {
-            console.log('Initializing Lesson 3: Brain Stew...');
-            
-            const settings = getAlphaTabSettings('#alphatab3');
-            apis.api3 = new alphaTab.AlphaTabApi(document.getElementById('alphatab3'), settings);
-            
-            // Load the actual Brain Stew GP file
-            fetch('assets/brain-stew.gp3')
-                .then(response => response.arrayBuffer())
-                .then(data => {
-                    apis.api3.load(data);
-                    
-                    // After loading, select only the guitar track
-                    apis.api3.scoreLoaded.on((score) => {
-                        console.log('Brain Stew loaded, tracks:', score.tracks.length);
-                        
-                        // Find and render only the guitar track
-                        const guitarTrack = score.tracks.find(track => 
-                            track.name.toLowerCase().includes('guitar') || 
-                            track.name.toLowerCase().includes('gtr')
-                        ) || score.tracks[0];
-                        
-                        if (guitarTrack) {
-                            apis.api3.renderTracks([guitarTrack]);
-                            console.log('Rendering guitar track:', guitarTrack.name);
-                        }
-                    });
-                })
-                .catch(error => {
-                    console.error('Error loading Brain Stew:', error);
-                    document.getElementById('alphatab3').innerHTML = `
-                        <div class="loading-message">
-                            ❌ Error loading Brain Stew<br>
-                            <small>Check console for details</small>
-                        </div>
-                    `;
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animation = 'slideIn 0.6s ease-out forwards';
+                    }
                 });
+            }, observerOptions);
             
-            apis.api3.soundFontLoad.on(() => console.log('Lesson 3 audio ready'));
-            apis.api3.error.on(error => console.error('Lesson 3 error:', error));
-        }
-        
-        // Initialize all lessons on page load
-        window.addEventListener('DOMContentLoaded', function() {
-            console.log('Loading all interactive lessons...');
-            initializeLesson1();
-            initializeLesson2();
-            initializeLesson3();
+            document.querySelectorAll('.lesson-card').forEach(card => {
+                observer.observe(card);
+            });
         });
         
-        // Control functions
-        function setupControls(playId, stopId, slowId, normalId, apiKey, playText) {
-            // Play/Pause
-            document.getElementById(playId).addEventListener('click', function() {
-                if (apis[apiKey]) {
-                    if (apis[apiKey].isPlaying) {
-                        apis[apiKey].pause();
-                        this.textContent = playText;
-                    } else {
-                        apis[apiKey].play();
-                        this.textContent = '⏸ Pause';
-                    }
+        // Add CSS animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
                 }
-            });
-            
-            // Stop
-            document.getElementById(stopId).addEventListener('click', function() {
-                if (apis[apiKey]) {
-                    apis[apiKey].stop();
-                    document.getElementById(playId).textContent = playText;
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
                 }
-            });
-            
-            // Tempo controls
-            if (slowId && normalId) {
-                document.getElementById(slowId).addEventListener('click', function() {
-                    if (apis[apiKey]) {
-                        apis[apiKey].playbackSpeed = 0.6;
-                        console.log(`${apiKey} speed: 60%`);
-                    }
-                });
-                
-                document.getElementById(normalId).addEventListener('click', function() {
-                    if (apis[apiKey]) {
-                        apis[apiKey].playbackSpeed = 1.0;
-                        console.log(`${apiKey} speed: 100%`);
-                    }
-                });
             }
-        }
-        
-        // Setup controls for all lessons
-        setupControls('play1', 'stop1', 'slow1', 'normal1', 'api1', '▶ Play Example');
-        setupControls('play2', 'stop2', 'slow2', 'normal2', 'api2', '▶ Play Techniques');
-        setupControls('play3', 'stop3', 'slow3', 'normal3', 'api3', '▶ Play Brain Stew');
-        
-        console.log('Brenna\'s Guitar Academy Ready!');
+            
+            .lesson-card {
+                opacity: 0;
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>

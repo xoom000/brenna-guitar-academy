@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎸 Guitar Anatomy - Interactive alphaTab Edition 🔍</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Arial Black', Arial, sans-serif;
+            background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(20, 20, 20, 0.95)), url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1200&h=800&fit=crop') center/cover;
+            background-attachment: fixed;
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container { max-width: 1000px; margin: 0 auto; }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 25px;
+            border-radius: 20px;
+            border: 3px solid rgba(255, 0, 0, 0.3);
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #ff0000, #ff6666, #ff0000);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 3s ease-in-out infinite;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .lesson-section {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 20px;
+            padding: 25px;
+            border: 3px solid rgba(255, 0, 0, 0.3);
+            margin-bottom: 25px;
+        }
+        
+        .section-title {
+            color: #ff0000;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .alphatab-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #ff0000;
+            min-height: 200px;
+        }
+        
+        .alphatab-controls {
+            text-align: center;
+            margin-bottom: 15px;
+            background: rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+        }
+        
+        .btn {
+            background: #ff0000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 8px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover { background: #cc0000; transform: translateY(-2px); }
+        
+        .at-cursor-bar { background: transparent !important; }
+        .at-cursor-beat { background: transparent !important; }
+        .at-highlight * { fill: #ff0000 !important; stroke: #ff0000 !important; }
+        
+        .loading-message {
+            text-align: center;
+            color: #333;
+            padding: 60px 20px;
+            font-size: 16px;
+        }
+        
+        .anatomy-info {
+            background: rgba(255, 0, 0, 0.1);
+            border: 2px solid #ff0000;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+    </style>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@coderline/alphatab@latest/dist/alphaTab.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎸 Interactive Guitar Anatomy 🔍</h1>
+            <p>Learn your guitar parts through interactive examples</p>
+        </div>
+        
+        <div class="lesson-section">
+            <div class="section-title">🎸 String Names & Tuning</div>
+            <div class="anatomy-info">
+                <h3>Standard Guitar Tuning (Low to High):</h3>
+                <p><strong>E - A - D - G - B - E</strong></p>
+                <p>The thickest string (6th) is low E, the thinnest (1st) is high E</p>
+            </div>
+            
+            <div class="alphatab-container">
+                <div class="alphatab-controls">
+                    <button class="btn" id="play1">▶ Play Each String</button>
+                    <button class="btn" id="stop1">⏹ Stop</button>
+                </div>
+                <div id="alphatab1">
+                    <div class="loading-message">🎸 Loading string identification...</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="lesson-section">
+            <div class="section-title">🔢 Fret Numbers</div>
+            <div class="anatomy-info">
+                <h3>Fret Positions:</h3>
+                <p>Frets are numbered starting from the headstock. The space between the nut and first fret wire is the 1st fret, and so on.</p>
+            </div>
+            
+            <div class="alphatab-container">
+                <div class="alphatab-controls">
+                    <button class="btn" id="play2">▶ Play Fret Numbers</button>
+                    <button class="btn" id="stop2">⏹ Stop</button>
+                </div>
+                <div id="alphatab2">
+                    <div class="loading-message">🔢 Loading fret number exercise...</div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin: 40px 0;">
+            <a href="../index.html" style="color: #ff0000; text-decoration: none; font-weight: bold; padding: 12px 24px; border: 2px solid #ff0000; border-radius: 10px;">← Back to Main Lessons</a>
+        </div>
+    </div>
+
+    <script>
+        console.log('Interactive Guitar Anatomy Starting...');
+        
+        const apis = {};
+        
+        function getAlphaTabSettings(scrollElement) {
+            return {
+                core: { engine: 'svg' },
+                display: { layoutMode: 'page', staveProfile: 'TabMixed' },
+                player: {
+                    enablePlayer: true,
+                    enableCursor: true,
+                    enableUserInteraction: true,
+                    soundFont: 'https://cdn.jsdelivr.net/npm/@coderline/alphatab@latest/dist/soundfont/sonivox.sf2',
+                    scrollElement: scrollElement,
+                    audioBufferSize: 2048,
+                    enableElementHighlighting: true
+                }
+            };
+        }
+        
+        window.addEventListener('DOMContentLoaded', function() {
+            // String names exercise
+            const settings1 = getAlphaTabSettings('#alphatab1');
+            apis.api1 = new alphaTab.AlphaTabApi(document.getElementById('alphatab1'), settings1);
+            
+            const stringNamesTeX = `
+            \\title "String Names (Low to High)"
+            \\subtitle "E - A - D - G - B - E"
+            \\tempo 80
+            .
+            0.6.1 r.4 0.5.1 r.4 0.4.1 r.4 0.3.1 r.4 0.2.1 r.4 0.1.1 r.4
+            `;
+            apis.api1.tex(stringNamesTeX);
+            
+            // Fret numbers exercise
+            const settings2 = getAlphaTabSettings('#alphatab2');
+            apis.api2 = new alphaTab.AlphaTabApi(document.getElementById('alphatab2'), settings2);
+            
+            const fretNumbersTeX = `
+            \\title "Fret Numbers on Low E String"
+            \\subtitle "Frets 0, 1, 2, 3, 4, 5"
+            \\tempo 90
+            .
+            0.6 1.6 2.6 3.6 4.6 5.6 | 0.6 1.6 2.6 3.6 4.6 5.6
+            `;
+            apis.api2.tex(fretNumbersTeX);
+            
+            // Event listeners
+            Object.keys(apis).forEach(key => {
+                apis[key].scoreLoaded.on(() => console.log(`${key} loaded`));
+                apis[key].error.on(error => console.error(`${key} error:`, error));
+            });
+        });
+        
+        // Control buttons
+        document.getElementById('play1').addEventListener('click', function() {
+            if (apis.api1) {
+                if (apis.api1.isPlaying) {
+                    apis.api1.pause();
+                    this.textContent = '▶ Play Each String';
+                } else {
+                    apis.api1.play();
+                    this.textContent = '⏸ Pause';
+                }
+            }
+        });
+        
+        document.getElementById('stop1').addEventListener('click', function() {
+            if (apis.api1) {
+                apis.api1.stop();
+                document.getElementById('play1').textContent = '▶ Play Each String';
+            }
+        });
+        
+        document.getElementById('play2').addEventListener('click', function() {
+            if (apis.api2) {
+                if (apis.api2.isPlaying) {
+                    apis.api2.pause();
+                    this.textContent = '▶ Play Fret Numbers';
+                } else {
+                    apis.api2.play();
+                    this.textContent = '⏸ Pause';
+                }
+            }
+        });
+        
+        document.getElementById('stop2').addEventListener('click', function() {
+            if (apis.api2) {
+                apis.api2.stop();
+                document.getElementById('play2').textContent = '▶ Play Fret Numbers';
+            }
+        });
+    </script>
+</body>
+</html>

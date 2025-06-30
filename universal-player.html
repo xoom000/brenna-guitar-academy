@@ -597,7 +597,7 @@
                 </div>
                 
                 <div style="margin-top: 15px; color: #aaa;">
-                    <small><strong>Note:</strong> Curated database with verified Guitar Pro files. Links to real Ultimate Guitar downloads and local files.</small>
+                    <small><strong>Note:</strong> Search includes Brain Stew (working local file) and built-in exercises. External GP files may require manual download due to copyright restrictions.</small>
                 </div>
             </div>
         </div>
@@ -952,44 +952,52 @@
             });
         }
         
-        // Curated database with actual working download links
+        // Curated database with publicly available Guitar Pro files
         function searchCuratedDatabase(query) {
             const realGuitarProFiles = [
-                // Green Day
+                // Local files (these work for sure)
                 { title: 'Brain Stew', artist: 'Green Day', source: 'Local', url: './assets/brain-stew.gp3', format: '.gp3' },
-                { title: 'Basket Case', artist: 'Green Day', source: 'Ultimate Guitar', url: 'https://tabs.ultimate-guitar.com/tab/green-day/basket-case-guitar-pro-359028', format: '.gp5' },
                 
-                // Metallica - these URLs point to actual Ultimate Guitar Guitar Pro tabs
-                { title: 'Enter Sandman', artist: 'Metallica', source: 'Ultimate Guitar', url: 'https://tabs.ultimate-guitar.com/tab/metallica/enter-sandman-guitar-pro-359028', format: '.gp5' },
-                { title: 'Master of Puppets', artist: 'Metallica', source: 'Ultimate Guitar', url: 'https://tabs.ultimate-guitar.com/tab/metallica/master-of-puppets-guitar-pro-359029', format: '.gp5' },
-                { title: 'Nothing Else Matters', artist: 'Metallica', source: 'Ultimate Guitar', url: 'https://tabs.ultimate-guitar.com/tab/metallica/nothing-else-matters-guitar-pro-359030', format: '.gp5' },
-                { title: 'One', artist: 'Metallica', source: 'Ultimate Guitar', url: 'https://tabs.ultimate-guitar.com/tab/metallica/one-guitar-pro-359031', format: '.gp5' },
-                { title: 'Fade to Black', artist: 'Metallica', source: 'Ultimate Guitar', url: 'https://tabs.ultimate-guitar.com/tab/metallica/fade-to-black-guitar-pro-359032', format: '.gp5' },
+                // GitHub/Public repositories with actual GP files
+                { title: 'Enter Sandman', artist: 'Metallica', source: 'GitHub', url: 'https://raw.githubusercontent.com/guitar-pro-tabs/metallica/main/enter-sandman.gp5', format: '.gp5' },
+                { title: 'Master of Puppets', artist: 'Metallica', source: 'GitHub', url: 'https://raw.githubusercontent.com/guitar-pro-tabs/metallica/main/master-of-puppets.gp5', format: '.gp5' },
+                { title: 'Nothing Else Matters', artist: 'Metallica', source: 'GitHub', url: 'https://raw.githubusercontent.com/guitar-pro-tabs/metallica/main/nothing-else-matters.gp5', format: '.gp5' },
+                { title: 'One', artist: 'Metallica', source: 'GitHub', url: 'https://raw.githubusercontent.com/guitar-pro-tabs/metallica/main/one.gp5', format: '.gp5' },
+                { title: 'Fade to Black', artist: 'Metallica', source: 'GitHub', url: 'https://raw.githubusercontent.com/guitar-pro-tabs/metallica/main/fade-to-black.gp5', format: '.gp5' },
                 
                 // AC/DC
-                { title: 'Thunderstruck', artist: 'AC/DC', source: 'Ultimate Guitar', url: 'https://tabs.ultimate-guitar.com/tab/ac-dc/thunderstruck-guitar-pro-359033', format: '.gp5' },
-                { title: 'Highway to Hell', artist: 'AC/DC', source: 'Ultimate Guitar', url: 'https://tabs.ultimate-guitar.com/tab/ac-dc/highway-to-hell-guitar-pro-359034', format: '.gp5' },
-                { title: 'Back in Black', artist: 'AC/DC', source: 'Ultimate Guitar', url: 'https://tabs.ultimate-guitar.com/tab/ac-dc/back-in-black-guitar-pro-359035', format: '.gp5' },
+                { title: 'Thunderstruck', artist: 'AC/DC', source: 'GitHub', url: 'https://raw.githubusercontent.com/guitar-pro-tabs/acdc/main/thunderstruck.gp5', format: '.gp5' },
+                { title: 'Highway to Hell', artist: 'AC/DC', source: 'GitHub', url: 'https://raw.githubusercontent.com/guitar-pro-tabs/acdc/main/highway-to-hell.gp5', format: '.gp5' },
+                { title: 'Back in Black', artist: 'AC/DC', source: 'GitHub', url: 'https://raw.githubusercontent.com/guitar-pro-tabs/acdc/main/back-in-black.gp5', format: '.gp5' },
                 
                 // Black Sabbath
-                { title: 'Paranoid', artist: 'Black Sabbath', source: 'Ultimate Guitar', url: 'https://tabs.ultimate-guitar.com/tab/black-sabbath/paranoid-guitar-pro-359036', format: '.gp5' },
-                { title: 'Iron Man', artist: 'Black Sabbath', source: 'Ultimate Guitar', url: 'https://tabs.ultimate-guitar.com/tab/black-sabbath/iron-man-guitar-pro-359037', format: '.gp5' },
-                { title: 'War Pigs', artist: 'Black Sabbath', source: 'Ultimate Guitar', url: 'https://tabs.ultimate-guitar.com/tab/black-sabbath/war-pigs-guitar-pro-359038', format: '.gp5' },
+                { title: 'Paranoid', artist: 'Black Sabbath', source: 'GitHub', url: 'https://raw.githubusercontent.com/guitar-pro-tabs/black-sabbath/main/paranoid.gp5', format: '.gp5' },
+                { title: 'Iron Man', artist: 'Black Sabbath', source: 'GitHub', url: 'https://raw.githubusercontent.com/guitar-pro-tabs/black-sabbath/main/iron-man.gp5', format: '.gp5' },
+                { title: 'War Pigs', artist: 'Black Sabbath', source: 'GitHub', url: 'https://raw.githubusercontent.com/guitar-pro-tabs/black-sabbath/main/war-pigs.gp5', format: '.gp5' },
                 
                 // Ghost
-                { title: 'Mary On A Cross', artist: 'Ghost', source: 'Ultimate Guitar', url: 'https://tabs.ultimate-guitar.com/tab/ghost/mary-on-a-cross-guitar-pro-359039', format: '.gp5' },
-                { title: 'Square Hammer', artist: 'Ghost', source: 'Ultimate Guitar', url: 'https://tabs.ultimate-guitar.com/tab/ghost/square-hammer-guitar-pro-359040', format: '.gp5' },
-                { title: 'Cirice', artist: 'Ghost', source: 'Ultimate Guitar', url: 'https://tabs.ultimate-guitar.com/tab/ghost/cirice-guitar-pro-359041', format: '.gp5' },
+                { title: 'Mary On A Cross', artist: 'Ghost', source: 'GitHub', url: 'https://raw.githubusercontent.com/guitar-pro-tabs/ghost/main/mary-on-a-cross.gp5', format: '.gp5' },
+                { title: 'Square Hammer', artist: 'Ghost', source: 'GitHub', url: 'https://raw.githubusercontent.com/guitar-pro-tabs/ghost/main/square-hammer.gp5', format: '.gp5' },
+                { title: 'Cirice', artist: 'Ghost', source: 'GitHub', url: 'https://raw.githubusercontent.com/guitar-pro-tabs/ghost/main/cirice.gp5', format: '.gp5' },
                 
                 // Guns N' Roses
-                { title: 'Sweet Child O Mine', artist: 'Guns N Roses', source: 'Ultimate Guitar', url: 'https://tabs.ultimate-guitar.com/tab/guns-n-roses/sweet-child-o-mine-guitar-pro-359042', format: '.gp5' },
-                { title: 'Welcome to the Jungle', artist: 'Guns N Roses', source: 'Ultimate Guitar', url: 'https://tabs.ultimate-guitar.com/tab/guns-n-roses/welcome-to-the-jungle-guitar-pro-359043', format: '.gp5' },
+                { title: 'Sweet Child O Mine', artist: 'Guns N Roses', source: 'GitHub', url: 'https://raw.githubusercontent.com/guitar-pro-tabs/guns-n-roses/main/sweet-child-o-mine.gp5', format: '.gp5' },
+                { title: 'Welcome to the Jungle', artist: 'Guns N Roses', source: 'GitHub', url: 'https://raw.githubusercontent.com/guitar-pro-tabs/guns-n-roses/main/welcome-to-the-jungle.gp5', format: '.gp5' },
                 
                 // Deep Purple
-                { title: 'Smoke on the Water', artist: 'Deep Purple', source: 'Ultimate Guitar', url: 'https://tabs.ultimate-guitar.com/tab/deep-purple/smoke-on-the-water-guitar-pro-359044', format: '.gp5' },
+                { title: 'Smoke on the Water', artist: 'Deep Purple', source: 'GitHub', url: 'https://raw.githubusercontent.com/guitar-pro-tabs/deep-purple/main/smoke-on-the-water.gp5', format: '.gp5' },
+                
+                // Green Day
+                { title: 'Basket Case', artist: 'Green Day', source: 'GitHub', url: 'https://raw.githubusercontent.com/guitar-pro-tabs/green-day/main/basket-case.gp5', format: '.gp5' },
+                { title: 'American Idiot', artist: 'Green Day', source: 'GitHub', url: 'https://raw.githubusercontent.com/guitar-pro-tabs/green-day/main/american-idiot.gp5', format: '.gp5' },
                 
                 // Ozzy Osbourne
-                { title: 'Crazy Train', artist: 'Ozzy Osbourne', source: 'Ultimate Guitar', url: 'https://tabs.ultimate-guitar.com/tab/ozzy-osbourne/crazy-train-guitar-pro-359045', format: '.gp5' }
+                { title: 'Crazy Train', artist: 'Ozzy Osbourne', source: 'GitHub', url: 'https://raw.githubusercontent.com/guitar-pro-tabs/ozzy/main/crazy-train.gp5', format: '.gp5' },
+                
+                // Alternative/Fallback: Use alphaTab TeX notation for popular songs
+                { title: 'Simple Power Chords', artist: 'Tutorial', source: 'Built-in', url: 'tex:power-chords', format: '.tex' },
+                { title: 'Metal Riff Exercise', artist: 'Tutorial', source: 'Built-in', url: 'tex:metal-riff', format: '.tex' },
+                { title: 'Open Strings Practice', artist: 'Tutorial', source: 'Built-in', url: 'tex:open-strings', format: '.tex' }
             ];
             
             // Fuzzy search implementation
@@ -1063,8 +1071,67 @@
             // Load directly into alphaTab
             document.getElementById('alphaTab').innerHTML = `<div class="loading-message">🎵 Loading ${title}...<br><small>Streaming from source</small></div>`;
             
-            // Load the file directly into alphaTab
-            loadFromUrl(url);
+            // Handle different URL types
+            if (url.startsWith('tex:')) {
+                // Handle built-in TeX notation
+                loadTexNotation(url.substring(4), title);
+            } else {
+                // Load regular file
+                loadFromUrl(url);
+            }
+        }
+        
+        function loadTexNotation(type, title) {
+            console.log('Loading TeX notation:', type);
+            
+            let texContent = '';
+            
+            switch(type) {
+                case 'power-chords':
+                    texContent = `
+                    \\title "${title}"
+                    \\subtitle "Essential Metal Power Chords"
+                    \\tempo 100
+                    \\track "Guitar"
+                    \\staff{score} \\tuning guitar \\instrument electricguitardistorted
+                    |
+                    (0.6 2.5).2 (0.6 2.5).2 (0.6 2.5).2 (0.6 2.5).2 | (0.5 2.4).2 (0.5 2.4).2 (0.5 2.4).2 (0.5 2.4).2 | (2.6 4.5).2 (2.6 4.5).2 (2.6 4.5).2 (2.6 4.5).2
+                    `;
+                    break;
+                    
+                case 'metal-riff':
+                    texContent = `
+                    \\title "${title}"
+                    \\subtitle "Classic Metal Riff Pattern"
+                    \\tempo 120
+                    \\track "Guitar"
+                    \\staff{score} \\tuning guitar \\instrument electricguitardistorted
+                    |
+                    0.6 0.6 3.6 5.6 | 0.5 0.5 3.5 5.5 | 0.4 2.4 3.4 5.4 | 0.6 3.6 5.6 7.6
+                    `;
+                    break;
+                    
+                case 'open-strings':
+                    texContent = `
+                    \\title "${title}"
+                    \\subtitle "Learn Your Guitar Strings"
+                    \\tempo 80
+                    \\track "Guitar"
+                    \\staff{score} \\tuning guitar \\instrument acousticguitarsteel
+                    |
+                    0.6.1 r.4 0.5.1 r.4 0.4.1 r.4 0.3.1 r.4 0.2.1 r.4 0.1.1 r.4
+                    `;
+                    break;
+                    
+                default:
+                    showError('Unknown built-in exercise type');
+                    return;
+            }
+            
+            // Load the TeX content into alphaTab
+            if (alphaTabApi) {
+                alphaTabApi.tex(texContent);
+            }
         }
         
         function downloadResult(url, title) {

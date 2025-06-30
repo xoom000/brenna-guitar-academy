@@ -266,14 +266,116 @@
         </div>
         
         <!-- Practice Section -->
+        <!-- Lesson 4: Open Strings -->
+        <div class="lesson-section">
+            <h2>🎸 Lesson 4: Open Strings - Know Your Guitar</h2>
+            <div class="lesson-description">
+                <p>Each guitar string has a name when played "open" (without pressing any frets). From thickest to thinnest: <strong>E - A - D - G - B - E</strong></p>
+            </div>
+            
+            <h3>🎵 Interactive Example: Open String Exercise</h3>
+            <div class="alphatab-container">
+                <div class="alphatab-controls">
+                    <button class="btn" id="play4">▶ Play Open Strings</button>
+                    <button class="btn" id="stop4">⏹ Stop</button>
+                    <span style="color: #333; margin-left: 15px;"><strong>Learn each string's sound!</strong></span>
+                </div>
+                <div id="alphatab4">
+                    <div class="loading-message">
+                        🎸 Loading open strings exercise...<br>
+                        <small>E - A - D - G - B - E</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Lesson 5: First Frets -->
+        <div class="lesson-section">
+            <h2>🤘 Lesson 5: Your First Frets</h2>
+            <div class="lesson-description">
+                <p>Now let's press some frets! Remember to press <strong>just behind</strong> the fret wire for a clean sound.</p>
+            </div>
+            
+            <h3>🎸 Interactive Example: Fret Exercise</h3>
+            <div class="alphatab-container">
+                <div class="alphatab-controls">
+                    <button class="btn" id="play5">▶ Play Fret Exercise</button>
+                    <button class="btn" id="stop5">⏹ Stop</button>
+                    <button class="btn" id="slow5">🐌 Slow Practice</button>
+                    <button class="btn" id="normal5">⚡ Normal Speed</button>
+                </div>
+                <div id="alphatab5">
+                    <div class="loading-message">
+                        🤘 Loading first fret exercise...<br>
+                        <small>Press firmly for clean notes!</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Lesson 6: Techniques -->
+        <div class="lesson-section">
+            <h2>⚡ Lesson 6: Metal Techniques</h2>
+            <div class="lesson-description">
+                <p><strong>Slides (sl)</strong>, <strong>Hammer-ons (h)</strong>, and <strong>Pull-offs (p)</strong> are essential metal techniques that make your playing fluid and aggressive!</p>
+            </div>
+            
+            <h3>🔥 Interactive Example: Technique Showcase</h3>
+            <div class="alphatab-container">
+                <div class="alphatab-controls">
+                    <button class="btn" id="play6">▶ Play Techniques</button>
+                    <button class="btn" id="stop6">⏹ Stop</button>
+                    <button class="btn" id="slow6">🐌 Learn Slowly</button>
+                    <button class="btn" id="normal6">🔥 Full Speed</button>
+                </div>
+                <div id="alphatab6">
+                    <div class="loading-message">
+                        ⚡ Loading metal techniques...<br>
+                        <small>Slides, hammers, and pulls!</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tip-box">
+                <h4>🎯 Technique Tips</h4>
+                <p><strong>Slide:</strong> Keep pressure while sliding between frets<br>
+                <strong>Hammer-on:</strong> Strike the string with your fretting finger<br>
+                <strong>Pull-off:</strong> Pluck the string by pulling your finger off</p>
+            </div>
+        </div>
+        
+        <!-- Lesson 7: Palm Muting -->
+        <div class="lesson-section">
+            <h2>🤚 Lesson 7: Palm Muting - The Metal Sound</h2>
+            <div class="lesson-description">
+                <p>Palm muting creates that tight, chunky sound that defines metal rhythm guitar. Rest the side of your picking hand lightly on the strings near the bridge.</p>
+            </div>
+            
+            <h3>🎸 Interactive Example: Palm Muted Power Chords</h3>
+            <div class="alphatab-container">
+                <div class="alphatab-controls">
+                    <button class="btn" id="play7">▶ Play Palm Muted</button>
+                    <button class="btn" id="stop7">⏹ Stop</button>
+                    <span style="color: #333; margin-left: 15px;"><strong>Feel that chunk!</strong></span>
+                </div>
+                <div id="alphatab7">
+                    <div class="loading-message">
+                        🤚 Loading palm muting example...<br>
+                        <small>Tight and aggressive!</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Practice Section -->
         <div class="practice-section">
-            <h3>🎯 Ready to Practice?</h3>
-            <p>Now that you understand how tablature works, you can:</p>
+            <h3>🎯 Ready to Rock?</h3>
+            <p>You've learned all the fundamentals! Now you can:</p>
             <ul style="margin: 15px 0; padding-left: 20px;">
-                <li>Play along with any of the examples above</li>
-                <li>Use the tempo controls to practice at your own speed</li>
-                <li>Watch the red highlighting to learn perfect timing</li>
-                <li>Move on to more songs in the lesson library</li>
+                <li>Read any guitar tablature</li>
+                <li>Play power chords with confidence</li>
+                <li>Use essential metal techniques</li>
+                <li>Create that chunky metal sound with palm muting</li>
             </ul>
             <div style="text-align: center; margin-top: 20px;">
                 <a href="../index.html" class="btn" style="text-decoration: none; padding: 12px 24px; font-size: 16px;">
@@ -296,11 +398,12 @@
         function getAlphaTabSettings(scrollElement) {
             return {
                 core: {
-                    engine: 'svg'
+                    engine: 'svg',
+                    logLevel: 'info'
                 },
                 display: {
                     layoutMode: 'page',
-                    staveProfile: 'TabMixed'
+                    staveProfile: 'Tab'  // Tab only, no standard notation
                 },
                 player: {
                     enablePlayer: true,
@@ -310,6 +413,13 @@
                     scrollElement: scrollElement,
                     audioBufferSize: 2048,
                     enableElementHighlighting: true
+                },
+                notation: {
+                    elements: {
+                        scoreTitle: true,
+                        scoreSubTitle: true,
+                        guitarTuning: true
+                    }
                 }
             };
         }
@@ -383,12 +493,84 @@
             });
         }
         
+        // Initialize Lesson 4: Open Strings
+        function initializeLesson4() {
+            const settings = getAlphaTabSettings('#alphatab4');
+            apis.api4 = new alphaTab.AlphaTabApi(document.getElementById('alphatab4'), settings);
+            
+            const openStringsTeX = `
+            \\title "Open Strings Exercise"
+            \\subtitle "E - A - D - G - B - E"
+            \\tempo 80
+            \\track "Guitar"
+            \\staff{score} \\tuning guitar \\instrument acousticguitarsteel
+            |
+            0.6.1 r.4 0.5.1 r.4 0.4.1 r.4 0.3.1 r.4 0.2.1 r.4 0.1.1 r.4
+            `;
+            apis.api4.tex(openStringsTeX);
+        }
+        
+        // Initialize Lesson 5: First Frets
+        function initializeLesson5() {
+            const settings = getAlphaTabSettings('#alphatab5');
+            apis.api5 = new alphaTab.AlphaTabApi(document.getElementById('alphatab5'), settings);
+            
+            const firstFretsTeX = `
+            \\title "First Fret Exercise"
+            \\subtitle "Learn to Press Frets Cleanly"
+            \\tempo 90
+            \\track "Guitar"
+            \\staff{score} \\tuning guitar \\instrument acousticguitarsteel
+            |
+            0.6 1.6 2.6 3.6 | 0.5 1.5 2.5 3.5 | 0.4 1.4 2.4 3.4 | 0.3 1.3 2.3 3.3
+            `;
+            apis.api5.tex(firstFretsTeX);
+        }
+        
+        // Initialize Lesson 6: Techniques
+        function initializeLesson6() {
+            const settings = getAlphaTabSettings('#alphatab6');
+            apis.api6 = new alphaTab.AlphaTabApi(document.getElementById('alphatab6'), settings);
+            
+            const techniquesTeX = `
+            \\title "Metal Techniques"
+            \\subtitle "Slides, Hammer-ons & Pull-offs"
+            \\tempo 90
+            \\track "Guitar"
+            \\staff{score} \\tuning guitar \\instrument electricguitarclean
+            |
+            3.3{sl}5.3.4 | 0.3{h}2.3{h}3.3.4 | 3.3{p}2.3{p}0.3.4 | 5.4{sl}7.4.4 | 0.4{h}3.4{h}5.4.4 | 5.4{p}3.4{p}0.4.4
+            `;
+            apis.api6.tex(techniquesTeX);
+        }
+        
+        // Initialize Lesson 7: Palm Muting
+        function initializeLesson7() {
+            const settings = getAlphaTabSettings('#alphatab7');
+            apis.api7 = new alphaTab.AlphaTabApi(document.getElementById('alphatab7'), settings);
+            
+            const palmMutedTeX = `
+            \\title "Palm Muted Power Chords"
+            \\subtitle "Tight and Chunky Metal Sound"
+            \\tempo 110
+            \\track "Guitar"
+            \\staff{score} \\tuning guitar \\instrument electricguitardistorted
+            |
+            (0.6 2.5).8 (0.6 2.5).8 (0.6 2.5).8 (0.6 2.5).8 | (0.5 2.4).8 (0.5 2.4).8 (0.5 2.4).8 (0.5 2.4).8 | (2.6 4.5).8 (2.6 4.5).8 (2.6 4.5).8 (2.6 4.5).8
+            `;
+            apis.api7.tex(palmMutedTeX);
+        }
+        
         // Initialize all alphaTab instances
         window.addEventListener('DOMContentLoaded', function() {
             console.log('Loading interactive tablature examples...');
             initializeAlphaTab('alphatab1', 'api1', 'single notes example', 'single-notes');
             initializeAlphaTab('alphatab2', 'api2', 'power chord progression', 'power-chords');
             initializeAlphaTab('alphatab3', 'api3', 'Brain Stew', 'brain-stew');
+            initializeLesson4();
+            initializeLesson5();
+            initializeLesson6();
+            initializeLesson7();
         });
         
         // Control buttons for Example 1
@@ -466,6 +648,123 @@
         });
         
         // Player state change handlers
+        Object.keys(apis).forEach(apiKey => {
+            if (apis[apiKey]) {
+                apis[apiKey].playerStateChanged.on((e) => {
+                    console.log(`Player state changed for ${apiKey}:`, e.state);
+                });
+            }
+        });
+        
+        // Control buttons for Lesson 4
+        document.getElementById('play4').addEventListener('click', function() {
+            if (apis.api4) {
+                if (apis.api4.isPlaying) {
+                    apis.api4.pause();
+                    this.textContent = '▶ Play Open Strings';
+                } else {
+                    apis.api4.play();
+                    this.textContent = '⏸ Pause';
+                }
+            }
+        });
+        
+        document.getElementById('stop4').addEventListener('click', function() {
+            if (apis.api4) {
+                apis.api4.stop();
+                document.getElementById('play4').textContent = '▶ Play Open Strings';
+            }
+        });
+        
+        // Control buttons for Lesson 5
+        document.getElementById('play5').addEventListener('click', function() {
+            if (apis.api5) {
+                if (apis.api5.isPlaying) {
+                    apis.api5.pause();
+                    this.textContent = '▶ Play Fret Exercise';
+                } else {
+                    apis.api5.play();
+                    this.textContent = '⏸ Pause';
+                }
+            }
+        });
+        
+        document.getElementById('stop5').addEventListener('click', function() {
+            if (apis.api5) {
+                apis.api5.stop();
+                document.getElementById('play5').textContent = '▶ Play Fret Exercise';
+            }
+        });
+        
+        document.getElementById('slow5').addEventListener('click', function() {
+            if (apis.api5) {
+                apis.api5.playbackSpeed = 0.6;
+                console.log('Lesson 5 speed: 60%');
+            }
+        });
+        
+        document.getElementById('normal5').addEventListener('click', function() {
+            if (apis.api5) {
+                apis.api5.playbackSpeed = 1.0;
+                console.log('Lesson 5 speed: 100%');
+            }
+        });
+        
+        // Control buttons for Lesson 6
+        document.getElementById('play6').addEventListener('click', function() {
+            if (apis.api6) {
+                if (apis.api6.isPlaying) {
+                    apis.api6.pause();
+                    this.textContent = '▶ Play Techniques';
+                } else {
+                    apis.api6.play();
+                    this.textContent = '⏸ Pause';
+                }
+            }
+        });
+        
+        document.getElementById('stop6').addEventListener('click', function() {
+            if (apis.api6) {
+                apis.api6.stop();
+                document.getElementById('play6').textContent = '▶ Play Techniques';
+            }
+        });
+        
+        document.getElementById('slow6').addEventListener('click', function() {
+            if (apis.api6) {
+                apis.api6.playbackSpeed = 0.6;
+                console.log('Lesson 6 speed: 60%');
+            }
+        });
+        
+        document.getElementById('normal6').addEventListener('click', function() {
+            if (apis.api6) {
+                apis.api6.playbackSpeed = 1.0;
+                console.log('Lesson 6 speed: 100%');
+            }
+        });
+        
+        // Control buttons for Lesson 7
+        document.getElementById('play7').addEventListener('click', function() {
+            if (apis.api7) {
+                if (apis.api7.isPlaying) {
+                    apis.api7.pause();
+                    this.textContent = '▶ Play Palm Muted';
+                } else {
+                    apis.api7.play();
+                    this.textContent = '⏸ Pause';
+                }
+            }
+        });
+        
+        document.getElementById('stop7').addEventListener('click', function() {
+            if (apis.api7) {
+                apis.api7.stop();
+                document.getElementById('play7').textContent = '▶ Play Palm Muted';
+            }
+        });
+        
+        // Add event listeners for all APIs
         Object.keys(apis).forEach(apiKey => {
             if (apis[apiKey]) {
                 apis[apiKey].playerStateChanged.on((e) => {

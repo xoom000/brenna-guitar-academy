@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎸 Tablature Explained - Interactive alphaTab Lesson 📖</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial Black', Arial, sans-serif;
+            background: 
+                linear-gradient(rgba(0, 0, 0, 0.9), rgba(20, 20, 20, 0.95)),
+                url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1200&h=800&fit=crop') center/cover;
+            background-attachment: fixed;
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 25px;
+            border-radius: 20px;
+            border: 3px solid rgba(255, 0, 0, 0.3);
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #ff0000, #ff6666, #ff0000);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 3s ease-in-out infinite;
+            margin-bottom: 10px;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            color: #ff6666;
+            margin-bottom: 15px;
+        }
+        
+        .lesson-section {
+            background: rgba(0, 0, 0, 0.7);
+            margin: 20px 0;
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #ff0000;
+            backdrop-filter: blur(10px);
+        }
+        
+        .lesson-section h2 {
+            color: #ff0000;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .lesson-section h3 {
+            color: #ff6666;
+            font-size: 1.4em;
+            margin: 20px 0 10px 0;
+        }
+        
+        /* alphaTab Interactive Container */
+        .alphatab-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #ff0000;
+            min-height: 200px;
+        }
+        
+        .alphatab-controls {
+            text-align: center;
+            margin-bottom: 15px;
+            background: rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .btn {
+            background: #ff0000;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            margin: 0 5px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #cc0000;
+        }
+        
+        .lesson-description {
+            background: rgba(255, 0, 0, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #ff0000;
+        }
+        
+        .tip-box {
+            background: rgba(255, 165, 0, 0.1);
+            border: 2px solid #ffa500;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .tip-box h4 {
+            color: #ffa500;
+            margin-bottom: 8px;
+        }
+        
+        .practice-section {
+            background: rgba(0, 100, 0, 0.1);
+            border: 2px solid #00ff00;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .practice-section h3 {
+            color: #00ff00;
+        }
+        
+        /* alphaTab cursor styles - note level highlighting */
+        .at-cursor-bar {
+            background: transparent !important;
+        }
+        
+        .at-cursor-beat {
+            background: transparent !important;
+        }
+        
+        /* Note highlighting when played */
+        .at-highlight * {
+            fill: #ff0000 !important;
+            stroke: #ff0000 !important;
+            color: #ff0000 !important;
+        }
+        
+        .loading-message {
+            text-align: center;
+            color: #333;
+            padding: 40px;
+            font-size: 16px;
+        }
+    </style>
+    
+    <!-- alphaTab CDN Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@coderline/alphatab@latest/dist/alphaTab.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎸 Interactive Tablature Lesson 📖</h1>
+            <div class="subtitle">Learn to Read Guitar Tablature with Real Examples</div>
+            <p>Forget boring text examples - hear and see real guitar tablature in action!</p>
+        </div>
+        
+        <!-- Lesson 1: What is Tablature? -->
+        <div class="lesson-section">
+            <h2>📚 Lesson 1: What is Guitar Tablature?</h2>
+            <div class="lesson-description">
+                <p><strong>Guitar tablature (or "tab")</strong> is a simple way to read guitar music without learning traditional musical notation. Each line represents a guitar string, and numbers show which frets to press.</p>
+                <p>Instead of boring text examples, let's see and hear real tablature in action!</p>
+            </div>
+            
+            <h3>🎸 Interactive Example: Simple Single Notes</h3>
+            <div class="alphatab-container">
+                <div class="alphatab-controls">
+                    <button class="btn" id="play1">▶ Play Example</button>
+                    <button class="btn" id="stop1">⏹ Stop</button>
+                    <span style="color: #333; margin-left: 15px;"><strong>Watch the red highlighting!</strong></span>
+                </div>
+                <div id="alphatab1">
+                    <div class="loading-message">
+                        🎸 Loading simple single notes example...<br>
+                        <small>Listen and watch how each note lights up as it plays!</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tip-box">
+                <h4>💡 Pro Tip</h4>
+                <p>Notice how the tablature lights up in red as each note is played? This is exactly how you should think about timing when reading tabs!</p>
+            </div>
+        </div>
+        
+        <!-- Lesson 2: Power Chords -->
+        <div class="lesson-section">
+            <h2>🔥 Lesson 2: Power Chords - The Foundation of Metal</h2>
+            <div class="lesson-description">
+                <p><strong>Power chords</strong> are the backbone of rock and metal guitar. They use just 2-3 strings and create that chunky, aggressive sound you hear in your favorite songs.</p>
+            </div>
+            
+            <h3>🤘 Interactive Example: Basic Power Chord Progression</h3>
+            <div class="alphatab-container">
+                <div class="alphatab-controls">
+                    <button class="btn" id="play2">▶ Play Power Chords</button>
+                    <button class="btn" id="stop2">⏹ Stop</button>
+                    <span style="color: #333; margin-left: 15px;"><strong>Feel that chunky sound!</strong></span>
+                </div>
+                <div id="alphatab2">
+                    <div class="loading-message">
+                        🔥 Loading power chord progression...<br>
+                        <small>This is the sound of metal!</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Lesson 3: Real Song Example -->
+        <div class="lesson-section">
+            <h2>🎵 Lesson 3: Real Song - Brain Stew by Green Day</h2>
+            <div class="lesson-description">
+                <p>Now let's see a <strong>real song</strong> that uses everything we've learned. Brain Stew is perfect for beginners - it's mostly power chords with a simple, memorable riff.</p>
+            </div>
+            
+            <h3>🎸 Interactive Example: Brain Stew Main Riff</h3>
+            <div class="alphatab-container">
+                <div class="alphatab-controls">
+                    <button class="btn" id="play3">▶ Play Brain Stew</button>
+                    <button class="btn" id="stop3">⏹ Stop</button>
+                    <button class="btn" id="slow3">🐌 Slow Tempo</button>
+                    <button class="btn" id="normal3">⚡ Normal Tempo</button>
+                </div>
+                <div id="alphatab3">
+                    <div class="loading-message">
+                        🎵 Loading Brain Stew by Green Day...<br>
+                        <small>Your first real metal song!</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tip-box">
+                <h4>🎯 Practice Strategy</h4>
+                <p>Start with the slow tempo button, then work up to normal speed. Focus on the red highlighting to learn the timing!</p>
+            </div>
+        </div>
+        
+        <!-- Practice Section -->
+        <div class="practice-section">
+            <h3>🎯 Ready to Practice?</h3>
+            <p>Now that you understand how tablature works, you can:</p>
+            <ul style="margin: 15px 0; padding-left: 20px;">
+                <li>Play along with any of the examples above</li>
+                <li>Use the tempo controls to practice at your own speed</li>
+                <li>Watch the red highlighting to learn perfect timing</li>
+                <li>Move on to more songs in the lesson library</li>
+            </ul>
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="../index.html" class="btn" style="text-decoration: none; padding: 12px 24px; font-size: 16px;">
+                    🏠 Back to Main Lessons
+                </a>
+                <a href="../prototypes/brain-stew-v2-real-audio.html" class="btn" style="text-decoration: none; padding: 12px 24px; font-size: 16px; margin-left: 10px;">
+                    🎸 Play Full Brain Stew
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        console.log('Interactive Tablature Lesson Starting...');
+        
+        // Store multiple API instances
+        const apis = {};
+        
+        // alphaTab settings template
+        function getAlphaTabSettings(scrollElement) {
+            return {
+                core: {
+                    engine: 'svg'
+                },
+                display: {
+                    layoutMode: 'page',
+                    staveProfile: 'TabMixed'
+                },
+                player: {
+                    enablePlayer: true,
+                    enableCursor: true,
+                    enableUserInteraction: true,
+                    soundFont: 'https://cdn.jsdelivr.net/npm/@coderline/alphatab@latest/dist/soundfont/sonivox.sf2',
+                    scrollElement: scrollElement,
+                    audioBufferSize: 2048,
+                    enableElementHighlighting: true
+                }
+            };
+        }
+        
+        // Create simple Guitar Pro content programmatically for basic examples
+        // For now, we'll use the Brain Stew file for all examples
+        // In production, we'd create specific GP files for each lesson
+        
+        function initializeAlphaTab(containerId, apiKey, description) {
+            console.log(`Initializing ${containerId}...`);
+            
+            const settings = getAlphaTabSettings(`#${containerId}`);
+            apis[apiKey] = new alphaTab.AlphaTabApi(document.getElementById(containerId), settings);
+            
+            // Load Brain Stew file (we'll create specific files for each lesson later)
+            fetch('../assets/brain-stew.gp3')
+                .then(response => response.arrayBuffer())
+                .then(data => {
+                    apis[apiKey].load(data);
+                })
+                .catch(error => {
+                    console.error(`Error loading in ${containerId}:`, error);
+                    document.getElementById(containerId).innerHTML = `
+                        <div class="loading-message">
+                            ❌ Error loading ${description}<br>
+                            <small>Check console for details</small>
+                        </div>
+                    `;
+                });
+            
+            // Event listeners
+            apis[apiKey].scoreLoaded.on((score) => {
+                console.log(`Score loaded in ${containerId}`);
+            });
+            
+            apis[apiKey].renderFinished.on(() => {
+                console.log(`Rendering finished in ${containerId}`);
+            });
+            
+            apis[apiKey].soundFontLoad.on(() => {
+                console.log(`SoundFont loaded for ${containerId}`);
+            });
+            
+            apis[apiKey].playerReady.on(() => {
+                console.log(`Player ready for ${containerId}`);
+            });
+            
+            apis[apiKey].error.on((error) => {
+                console.error(`alphaTab Error in ${containerId}:`, error);
+            });
+        }
+        
+        // Initialize all alphaTab instances
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('Loading interactive tablature examples...');
+            initializeAlphaTab('alphatab1', 'api1', 'single notes example');
+            initializeAlphaTab('alphatab2', 'api2', 'power chord progression');
+            initializeAlphaTab('alphatab3', 'api3', 'Brain Stew');
+        });
+        
+        // Control buttons for Example 1
+        document.getElementById('play1').addEventListener('click', function() {
+            if (apis.api1) {
+                if (apis.api1.isPlaying) {
+                    apis.api1.pause();
+                    this.textContent = '▶ Play Example';
+                } else {
+                    apis.api1.play();
+                    this.textContent = '⏸ Pause';
+                }
+            }
+        });
+        
+        document.getElementById('stop1').addEventListener('click', function() {
+            if (apis.api1) {
+                apis.api1.stop();
+                document.getElementById('play1').textContent = '▶ Play Example';
+            }
+        });
+        
+        // Control buttons for Example 2
+        document.getElementById('play2').addEventListener('click', function() {
+            if (apis.api2) {
+                if (apis.api2.isPlaying) {
+                    apis.api2.pause();
+                    this.textContent = '▶ Play Power Chords';
+                } else {
+                    apis.api2.play();
+                    this.textContent = '⏸ Pause';
+                }
+            }
+        });
+        
+        document.getElementById('stop2').addEventListener('click', function() {
+            if (apis.api2) {
+                apis.api2.stop();
+                document.getElementById('play2').textContent = '▶ Play Power Chords';
+            }
+        });
+        
+        // Control buttons for Example 3 (Brain Stew)
+        document.getElementById('play3').addEventListener('click', function() {
+            if (apis.api3) {
+                if (apis.api3.isPlaying) {
+                    apis.api3.pause();
+                    this.textContent = '▶ Play Brain Stew';
+                } else {
+                    apis.api3.play();
+                    this.textContent = '⏸ Pause';
+                }
+            }
+        });
+        
+        document.getElementById('stop3').addEventListener('click', function() {
+            if (apis.api3) {
+                apis.api3.stop();
+                document.getElementById('play3').textContent = '▶ Play Brain Stew';
+            }
+        });
+        
+        document.getElementById('slow3').addEventListener('click', function() {
+            if (apis.api3) {
+                apis.api3.playbackSpeed = 0.5;
+                console.log('Playback speed set to 50%');
+            }
+        });
+        
+        document.getElementById('normal3').addEventListener('click', function() {
+            if (apis.api3) {
+                apis.api3.playbackSpeed = 1.0;
+                console.log('Playback speed set to 100%');
+            }
+        });
+        
+        // Player state change handlers
+        Object.keys(apis).forEach(apiKey => {
+            if (apis[apiKey]) {
+                apis[apiKey].playerStateChanged.on((e) => {
+                    console.log(`Player state changed for ${apiKey}:`, e.state);
+                });
+            }
+        });
+        
+        console.log('Interactive Tablature Lesson Ready!');
+    </script>
+</body>
+</html>

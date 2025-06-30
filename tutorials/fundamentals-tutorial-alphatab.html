@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎸 Guitar Fundamentals - Interactive alphaTab Edition 📚</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial Black', Arial, sans-serif;
+            background: 
+                linear-gradient(rgba(0, 0, 0, 0.8), rgba(45, 15, 15, 0.9)),
+                url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1200&h=800&fit=crop') center/cover;
+            background-attachment: fixed;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .header {
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(15px);
+            padding: 20px;
+            border-bottom: 3px solid #ff0000;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header h1 {
+            text-align: center;
+            background: linear-gradient(45deg, #ff0000, #ff6666, #ff0000);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite;
+            font-size: 2.5em;
+            font-weight: 900;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .breadcrumb {
+            text-align: center;
+            margin-top: 10px;
+            opacity: 0.8;
+            font-size: 1.1em;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .tutorial-section {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            margin-bottom: 40px;
+            border: 2px solid rgba(255, 0, 0, 0.3);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .tutorial-section:hover {
+            border-color: #ff0000;
+            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.3);
+        }
+        
+        .section-header {
+            background: linear-gradient(45deg, #ff0000, #cc0000);
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .section-number {
+            font-size: 3em;
+            font-weight: 900;
+            opacity: 0.3;
+            position: absolute;
+            right: 20px;
+            top: 10px;
+        }
+        
+        .section-title {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .section-subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .section-content {
+            padding: 30px;
+        }
+        
+        .content-text {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .content-text h3 {
+            color: #ff0000;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+        
+        /* alphaTab Interactive Container */
+        .alphatab-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 25px 0;
+            border: 2px solid #ff0000;
+            min-height: 250px;
+        }
+        
+        .alphatab-controls {
+            text-align: center;
+            margin-bottom: 15px;
+            background: rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+        }
+        
+        .btn {
+            background: #ff0000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 8px 5px 8px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+        
+        .btn:hover {
+            background: #cc0000;
+            transform: translateY(-2px);
+        }
+        
+        .tip-box {
+            background: rgba(255, 165, 0, 0.1);
+            border: 2px solid #ffa500;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .tip-box h4 {
+            color: #ffa500;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .practice-section {
+            background: rgba(0, 100, 0, 0.1);
+            border: 2px solid #00ff00;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+        
+        .practice-section h3 {
+            color: #00ff00;
+            margin-bottom: 15px;
+        }
+        
+        /* alphaTab cursor styles */
+        .at-cursor-bar {
+            background: transparent !important;
+        }
+        
+        .at-cursor-beat {
+            background: transparent !important;
+        }
+        
+        .at-highlight * {
+            fill: #ff0000 !important;
+            stroke: #ff0000 !important;
+            color: #ff0000 !important;
+        }
+        
+        .loading-message {
+            text-align: center;
+            color: #333;
+            padding: 60px 20px;
+            font-size: 16px;
+        }
+        
+        .back-nav {
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .back-nav a {
+            color: #ff0000;
+            text-decoration: none;
+            font-size: 1.1em;
+            font-weight: bold;
+            padding: 12px 24px;
+            border: 2px solid #ff0000;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        
+        .back-nav a:hover {
+            background: #ff0000;
+            color: white;
+        }
+    </style>
+    
+    <!-- alphaTab CDN Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@coderline/alphatab@latest/dist/alphaTab.js"></script>
+</head>
+<body>
+    <div class="header">
+        <h1>🎸 Interactive Guitar Fundamentals 📚</h1>
+        <div class="breadcrumb">Metal Guitar • Learning Path • Interactive Examples</div>
+    </div>
+    
+    <div class="container">
+        <!-- Section 1: Holding the Guitar -->
+        <div class="tutorial-section">
+            <div class="section-header">
+                <div class="section-number">01</div>
+                <div class="section-title">🎸 Holding Your Guitar</div>
+                <div class="section-subtitle">Get comfortable with your instrument</div>
+            </div>
+            <div class="section-content">
+                <div class="content-text">
+                    <h3>Classical vs Rock Position</h3>
+                    <p>For metal and rock guitar, most players use the <strong>casual position</strong> - guitar resting on your right leg, neck angled slightly upward. This gives you better access to higher frets for those sick solos!</p>
+                    
+                    <h3>Interactive Example: Simple Open String Exercise</h3>
+                    <p>Let's start with the most basic exercise - playing open strings. This helps you get comfortable with picking and hearing each string clearly.</p>
+                </div>
+                
+                <div class="alphatab-container">
+                    <div class="alphatab-controls">
+                        <button class="btn" id="play1">▶ Play Open Strings</button>
+                        <button class="btn" id="stop1">⏹ Stop</button>
+                        <span style="color: #333; margin-left: 15px;"><strong>Listen to each string ring clearly!</strong></span>
+                    </div>
+                    <div id="alphatab1">
+                        <div class="loading-message">
+                            🎸 Loading open strings exercise...<br>
+                            <small>Learn the sound of each string!</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tip-box">
+                    <h4>💡 Pro Tip</h4>
+                    <p>Each string has a name: E (thickest), A, D, G, B, E (thinnest). In metal, we mostly focus on the lower strings for that chunky sound!</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 2: First Frets -->
+        <div class="tutorial-section">
+            <div class="section-header">
+                <div class="section-number">02</div>
+                <div class="section-title">🤘 Your First Frets</div>
+                <div class="section-subtitle">Press down and make some noise!</div>
+            </div>
+            <div class="section-content">
+                <div class="content-text">
+                    <h3>Fretting Technique</h3>
+                    <p>Press down <strong>just behind</strong> the fret wire (not on top of it). Use your fingertips, and press firmly enough to get a clear sound without buzzing.</p>
+                    
+                    <h3>Interactive Example: First Fret Exercise</h3>
+                    <p>This exercise teaches you to fret notes on the first three frets. Start slow and focus on getting clean, clear notes.</p>
+                </div>
+                
+                <div class="alphatab-container">
+                    <div class="alphatab-controls">
+                        <button class="btn" id="play2">▶ Play Fret Exercise</button>
+                        <button class="btn" id="stop2">⏹ Stop</button>
+                        <button class="btn" id="slow2">🐌 Slow Practice</button>
+                        <button class="btn" id="normal2">⚡ Normal Speed</button>
+                    </div>
+                    <div id="alphatab2">
+                        <div class="loading-message">
+                            🤘 Loading first fret exercise...<br>
+                            <small>Watch the red highlighting to see timing!</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 3: Power Chords -->
+        <div class="tutorial-section">
+            <div class="section-header">
+                <div class="section-number">03</div>
+                <div class="section-title">🔥 Power Chords - Metal Foundation</div>
+                <div class="section-subtitle">The sound of pure metal aggression</div>
+            </div>
+            <div class="section-content">
+                <div class="content-text">
+                    <h3>What Are Power Chords?</h3>
+                    <p>Power chords use just 2-3 strings and create that massive, aggressive sound you hear in metal. They're easier than full chords and sound way more badass!</p>
+                    
+                    <h3>Interactive Example: Basic Power Chord Progression</h3>
+                    <p>This is a classic metal progression using E5, A5, and D5 power chords. Feel that chunky aggression!</p>
+                </div>
+                
+                <div class="alphatab-container">
+                    <div class="alphatab-controls">
+                        <button class="btn" id="play3">▶ Play Power Chords</button>
+                        <button class="btn" id="stop3">⏹ Stop</button>
+                        <button class="btn" id="slow3">🐌 Learn Slowly</button>
+                        <button class="btn" id="normal3">🔥 Metal Speed</button>
+                    </div>
+                    <div id="alphatab3">
+                        <div class="loading-message">
+                            🔥 Loading power chord progression...<br>
+                            <small>This is the sound of metal!</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tip-box">
+                    <h4>🤘 Metal Tip</h4>
+                    <p>Power chords are numbered like "E5" or "A5" - the "5" means it's a power chord. These are the building blocks of every metal song!</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Section 4: Palm Muting -->
+        <div class="tutorial-section">
+            <div class="section-header">
+                <div class="section-number">04</div>
+                <div class="section-title">🤚 Palm Muting Technique</div>
+                <div class="section-subtitle">Get that tight, chunky metal sound</div>
+            </div>
+            <div class="section-content">
+                <div class="content-text">
+                    <h3>The Secret to Metal Rhythm</h3>
+                    <p>Palm muting is when you lightly rest the side of your picking hand on the strings near the bridge. This creates that tight, percussive sound that makes metal so heavy.</p>
+                    
+                    <h3>Interactive Example: Palm Muted Power Chords</h3>
+                    <p>Same power chords as before, but now with palm muting. Notice how much tighter and more aggressive it sounds!</p>
+                </div>
+                
+                <div class="alphatab-container">
+                    <div class="alphatab-controls">
+                        <button class="btn" id="play4">▶ Play Palm Muted</button>
+                        <button class="btn" id="stop4">⏹ Stop</button>
+                        <button class="btn" id="compare4">🔄 Compare Normal vs Muted</button>
+                    </div>
+                    <div id="alphatab4">
+                        <div class="loading-message">
+                            🤚 Loading palm muting exercise...<br>
+                            <small>Feel the tightness and aggression!</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Practice Section -->
+        <div class="practice-section">
+            <h3>🎯 Ready for Real Songs?</h3>
+            <p>Now that you've mastered the fundamentals, you're ready to tackle real metal songs! These building blocks are used in every metal song you love.</p>
+            <div style="text-align: center; margin-top: 25px;">
+                <a href="../prototypes/brain-stew-v2-real-audio.html" class="btn" style="text-decoration: none; padding: 15px 30px; font-size: 18px; margin: 10px;">
+                    🎸 Play Brain Stew
+                </a>
+                <a href="../index.html" class="btn" style="text-decoration: none; padding: 15px 30px; font-size: 18px; margin: 10px;">
+                    🏠 More Lessons
+                </a>
+            </div>
+        </div>
+        
+        <div class="back-nav">
+            <a href="../index.html">← Back to Main Lessons</a>
+        </div>
+    </div>
+
+    <script>
+        console.log('Interactive Guitar Fundamentals Starting...');
+        
+        // Store multiple API instances
+        const apis = {};
+        
+        // alphaTab settings template
+        function getAlphaTabSettings(scrollElement) {
+            return {
+                core: {
+                    engine: 'svg'
+                },
+                display: {
+                    layoutMode: 'page',
+                    staveProfile: 'TabMixed'
+                },
+                player: {
+                    enablePlayer: true,
+                    enableCursor: true,
+                    enableUserInteraction: true,
+                    soundFont: 'https://cdn.jsdelivr.net/npm/@coderline/alphatab@latest/dist/soundfont/sonivox.sf2',
+                    scrollElement: scrollElement,
+                    audioBufferSize: 2048,
+                    enableElementHighlighting: true
+                }
+            };
+        }
+        
+        // Create different content for each fundamental lesson
+        function initializeAlphaTab(containerId, apiKey, description, lessonType) {
+            console.log(`Initializing ${containerId} for ${lessonType}...`);
+            
+            const settings = getAlphaTabSettings(`#${containerId}`);
+            apis[apiKey] = new alphaTab.AlphaTabApi(document.getElementById(containerId), settings);
+            
+            // Load different content based on lesson type
+            if (lessonType === 'open-strings') {
+                const openStringsTeX = `
+                \\title "Open Strings Exercise"
+                \\subtitle "Learn Each String's Sound"
+                \\tempo 80
+                .
+                0.6.1 0.5.1 0.4.1 0.3.1 0.2.1 0.1.1 | 0.6.1 0.5.1 0.4.1 0.3.1 0.2.1 0.1.1
+                `;
+                apis[apiKey].tex(openStringsTeX);
+            } else if (lessonType === 'first-frets') {
+                const firstFretsTeX = `
+                \\title "First Fret Exercise"
+                \\subtitle "Learn to Press Frets Cleanly"
+                \\tempo 90
+                .
+                0.6 1.6 2.6 3.6 | 0.5 1.5 2.5 3.5 | 0.4 1.4 2.4 3.4 | 0.3 1.3 2.3 3.3
+                `;
+                apis[apiKey].tex(firstFretsTeX);
+            } else if (lessonType === 'power-chords-basic') {
+                const powerChordsTeX = `
+                \\title "Basic Power Chords"
+                \\subtitle "E5 - A5 - D5 - A5"
+                \\tempo 100
+                .
+                (0.6 2.5).2 (0.6 2.5).2 (0.6 2.5).2 (0.6 2.5).2 | (0.5 2.4).2 (0.5 2.4).2 (0.5 2.4).2 (0.5 2.4).2 | (2.6 4.5).2 (2.6 4.5).2 (2.6 4.5).2 (2.6 4.5).2 | (0.5 2.4).2 (0.5 2.4).2 (0.5 2.4).2 (0.5 2.4).2
+                `;
+                apis[apiKey].tex(powerChordsTeX);
+            } else if (lessonType === 'palm-muted') {
+                const palmMutedTeX = `
+                \\title "Palm Muted Power Chords"
+                \\subtitle "Tight and Chunky Metal Sound"
+                \\tempo 110
+                .
+                (0.6 2.5).8 (0.6 2.5).8 (0.6 2.5).8 (0.6 2.5).8 (0.6 2.5).8 (0.6 2.5).8 (0.6 2.5).8 (0.6 2.5).8 | (0.5 2.4).8 (0.5 2.4).8 (0.5 2.4).8 (0.5 2.4).8 (0.5 2.4).8 (0.5 2.4).8 (0.5 2.4).8 (0.5 2.4).8
+                `;
+                apis[apiKey].tex(palmMutedTeX);
+            }
+            
+            // Event listeners
+            apis[apiKey].scoreLoaded.on((score) => {
+                console.log(`Score loaded in ${containerId}`);
+            });
+            
+            apis[apiKey].renderFinished.on(() => {
+                console.log(`Rendering finished in ${containerId}`);
+            });
+            
+            apis[apiKey].soundFontLoad.on(() => {
+                console.log(`SoundFont loaded for ${containerId}`);
+            });
+            
+            apis[apiKey].playerReady.on(() => {
+                console.log(`Player ready for ${containerId}`);
+            });
+            
+            apis[apiKey].error.on((error) => {
+                console.error(`alphaTab Error in ${containerId}:`, error);
+            });
+        }
+        
+        // Initialize all alphaTab instances
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('Loading interactive fundamentals examples...');
+            initializeAlphaTab('alphatab1', 'api1', 'open strings exercise', 'open-strings');
+            initializeAlphaTab('alphatab2', 'api2', 'first fret exercise', 'first-frets');
+            initializeAlphaTab('alphatab3', 'api3', 'power chord progression', 'power-chords-basic');
+            initializeAlphaTab('alphatab4', 'api4', 'palm muted exercise', 'palm-muted');
+        });
+        
+        // Control functions for each section
+        function setupControls(playId, stopId, apiKey, playText) {
+            document.getElementById(playId).addEventListener('click', function() {
+                if (apis[apiKey]) {
+                    if (apis[apiKey].isPlaying) {
+                        apis[apiKey].pause();
+                        this.textContent = playText;
+                    } else {
+                        apis[apiKey].play();
+                        this.textContent = '⏸ Pause';
+                    }
+                }
+            });
+            
+            document.getElementById(stopId).addEventListener('click', function() {
+                if (apis[apiKey]) {
+                    apis[apiKey].stop();
+                    document.getElementById(playId).textContent = playText;
+                }
+            });
+        }
+        
+        // Setup all controls
+        setupControls('play1', 'stop1', 'api1', '▶ Play Open Strings');
+        setupControls('play2', 'stop2', 'api2', '▶ Play Fret Exercise');
+        setupControls('play3', 'stop3', 'api3', '▶ Play Power Chords');
+        setupControls('play4', 'stop4', 'api4', '▶ Play Palm Muted');
+        
+        // Tempo controls
+        document.getElementById('slow2').addEventListener('click', function() {
+            if (apis.api2) apis.api2.playbackSpeed = 0.6;
+        });
+        
+        document.getElementById('normal2').addEventListener('click', function() {
+            if (apis.api2) apis.api2.playbackSpeed = 1.0;
+        });
+        
+        document.getElementById('slow3').addEventListener('click', function() {
+            if (apis.api3) apis.api3.playbackSpeed = 0.7;
+        });
+        
+        document.getElementById('normal3').addEventListener('click', function() {
+            if (apis.api3) apis.api3.playbackSpeed = 1.0;
+        });
+        
+        // Compare function (placeholder for now)
+        document.getElementById('compare4').addEventListener('click', function() {
+            if (apis.api4) {
+                // For now, just play the palm muted version
+                // In the future, we could alternate between muted and unmuted
+                apis.api4.play();
+            }
+        });
+        
+        console.log('Interactive Guitar Fundamentals Ready!');
+    </script>
+</body>
+</html>
